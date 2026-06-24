@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  @keyframes s1lp{0%,100%{opacity:1}50%{opacity:.35}}
+
+  .s1win{margin:0 auto;max-width:1000px;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff;box-shadow:0 1px 2px rgba(15,32,24,.04),0 44px 100px -54px rgba(15,32,24,.5)}
+  .s1bar{display:flex;align-items:center;gap:10px;padding:11px 16px;border-bottom:1px solid var(--line);background:#fbfdfc}
+  .s1crumb{font-size:12.5px;font-weight:700;color:var(--ink2)}
+  .s1crumb i{color:var(--muted);font-style:normal;margin:0 5px}
+  .s1crumb b{color:var(--ink);font-weight:800}
+  .s1live{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--green2);background:var(--mint);padding:5px 11px;border-radius:8px}
+  .s1live .ld{width:6px;height:6px;border-radius:50%;background:var(--lime);animation:s1lp 1.6s infinite}
+  .s1body{padding:16px;background:#F3F7F4}
+
+  .s1grid{display:grid;grid-template-columns:1.3fr .92fr;gap:16px;align-items:stretch}
+  @media(max-width:880px){.s1grid{grid-template-columns:1fr}}
+  .s1panel{background:#fff;border:1px solid var(--line);border-radius:9px;box-shadow:0 1px 2px rgba(15,32,24,.03),0 10px 26px -22px rgba(15,32,24,.3);padding:15px}
+  .s1left{display:flex;flex-direction:column;gap:14px}
+  .s1ptitle{font-size:12.5px;font-weight:800;letter-spacing:-.01em;display:flex;align-items:center;gap:8px;margin-bottom:11px;color:var(--ink)}
+  .s1tag{font-size:10px;font-weight:800;padding:3px 9px;border-radius:999px;color:var(--ink2);background:var(--soft);border:1px solid var(--line)}
+  .s1src{font-size:11px;color:var(--muted);font-weight:600;margin-left:auto}
+
+  .s1bars{display:flex;flex-direction:column;gap:8px}
+  .s1brow{display:flex;align-items:center;gap:10px}
+  .s1bname{font-size:11.5px;font-weight:700;width:108px;flex:0 0 auto;color:var(--ink2);transition:color .25s}
+  .s1btrack{flex:1;height:18px;background:var(--soft);border-radius:4px;overflow:hidden}
+  .s1btrack i{display:block;height:100%;width:0;border-radius:4px;background:#CBD5CF;transition:background .3s}
+  .s1bval{font-size:11px;font-weight:800;color:var(--ink2);width:52px;text-align:right;flex:0 0 auto;font-variant-numeric:tabular-nums;transition:color .25s}
+  .s1brow.key .s1bname{color:var(--green2)}
+  .s1brow.key .s1bval{color:var(--green2)}
+  .s1brow.key .s1btrack i{background:linear-gradient(90deg,var(--lime),var(--accent))}
+  .s1brow.key.amber .s1bname{color:var(--ambertx)}
+  .s1brow.key.amber .s1bval{color:var(--ambertx)}
+  .s1brow.key.amber .s1btrack i{background:linear-gradient(90deg,#EDC074,var(--amber))}
+
+  .s1tiles{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .s1tile{border:1px solid var(--line);border-radius:7px;padding:11px 12px;transition:border-color .25s,background .25s;background:#fff}
+  .s1tile .tl{font-size:10.5px;font-weight:700;color:var(--muted)}
+  .s1tile .tv{font-size:16px;font-weight:800;letter-spacing:-.02em;margin-top:3px;color:var(--ink);font-variant-numeric:tabular-nums}
+  .s1tile.key{border-color:#BFE3CC;background:var(--mint2)}
+  .s1tile.key .tv{color:var(--green2)}
+  .s1tile.key.amber{border-color:#EDD9AE;background:var(--amberbg)}
+  .s1tile.key.amber .tv{color:var(--ambertx)}
+
+  .s1seglist{display:flex;flex-direction:column;gap:10px}
+  .s1seg{border:1px solid var(--line);border-radius:8px;padding:13px 15px;transition:border-color .18s,box-shadow .18s,background .18s;cursor:pointer;background:#fff}
+  .s1seg:hover{box-shadow:0 12px 28px -20px rgba(15,32,24,.35)}
+  .s1seg.active{border-color:var(--lime);background:linear-gradient(180deg,#fff,var(--mint2));box-shadow:0 16px 34px -22px rgba(26,86,50,.4)}
+  .s1seg.active.amber{border-color:var(--amber);background:linear-gradient(180deg,#fff,var(--amberbg))}
+  .s1segtop{display:flex;align-items:center;gap:9px}
+  .s1segnm{font-size:14px;font-weight:800;letter-spacing:-.01em;color:var(--ink)}
+  .s1segcnt{margin-left:auto;font-size:16px;font-weight:800;letter-spacing:-.02em;color:var(--ink);font-variant-numeric:tabular-nums}
+  .s1segcnt small{font-size:11px;font-weight:700;color:var(--muted)}
+  .s1risk{font-size:9.5px;font-weight:800;padding:3px 8px;border-radius:999px;background:var(--mint);color:var(--green2)}
+  .s1risk.amber{background:var(--amberbg);color:var(--ambertx)}
+  .s1why{font-size:11px;color:var(--ink2);margin-top:9px;max-height:0;overflow:hidden;opacity:0;line-height:1.45;word-break:keep-all;transition:max-height .3s ease,opacity .3s ease,margin-top .3s ease}
+  .s1seg.active .s1why{max-height:80px;opacity:1}
+  .s1why b{color:var(--green2);font-weight:800}
+  .s1seg.active.amber .s1why b{color:var(--ambertx)}
+
+  @media (prefers-reduced-motion: reduce){.s1btrack i,.s1why,.s1seg,.s1tile{transition-duration:.01ms !important}}
+</style>
+</helmet>
+
+<div ref="{{ rootRef }}" style="--green:#1A5632;--accent:#37B179;--lime:#56C57E;--green2:#21724A;--mint:#E7F2EB;--mint2:#EEF8F1;--ink:#13261C;--ink2:#52645A;--muted:#90A096;--line:#E5ECE8;--soft:#F6F9F7;--amber:#E0A23B;--amberbg:#FBF3E3;--ambertx:#B07A1E;font-family:'Pretendard',system-ui,sans-serif;color:var(--ink);min-height:100vh;background:linear-gradient(180deg,#EAF3ED,#F6F9F7 55%,#fff);padding:42px 24px;display:flex;align-items:center;justify-content:center">
+
+  <div class="s1win">
+    <div class="s1body">
+      <div class="s1grid">
+
+        <div class="s1panel s1left">
+          <div>
+            <div class="s1ptitle"><span class="s1tag">행동</span>행동 신호<span class="s1src">자사몰 행동 로그</span></div>
+            <div class="s1bars" ref="{{ barsRef }}"></div>
+          </div>
+          <div>
+            <div class="s1ptitle"><span class="s1tag">주문</span>구매 지표<span class="s1src">카페24 주문 로그</span></div>
+            <div class="s1tiles" ref="{{ tilesRef }}"></div>
+          </div>
+        </div>
+
+        <div class="s1panel">
+          <div class="s1ptitle"><span class="s1tag">발굴</span>AXion이 생성한 세그먼트</div>
+          <div class="s1seglist" ref="{{ segRef }}"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1040,&quot;height&quot;:520},&quot;embedded&quot;:{&quot;editor&quot;:null,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  componentDidMount() { this.boot(); }
+  componentDidUpdate() { this.applyEmbed(); }
+  applyEmbed() {
+    if (!this.root) return;
+    const emb = this.props && this.props.embedded;
+    this.root.style.background = emb ? 'transparent' : 'linear-gradient(180deg,#EAF3ED,#F6F9F7 55%,#fff)';
+    this.root.style.minHeight = emb ? '0' : '100vh';
+    this.root.style.padding = emb ? '0' : '42px 24px';
+  }
+  data() {
+    return [
+      { id:'vip', nm:'주기 깨진 단골', risk:'VIP 이탈 징후', cnt:'86', tone:'amber',
+        why:'평균 7일마다 재구매하던 단골이 <b>3주째 발길을 끊고</b> 방문까지 급감했습니다. 지금 놓치면 이탈하는 고가치 고객입니다.',
+        beh:[['상세페이지 반복 방문',24,false,'1회'],['후기·Q&A 조회',18,false,'0회'],['할인 알림 클릭',22,false,'0회'],['최근 방문 급감',88,true,'−70%↓']],
+        buy:[['누적 구매','8회 이상',true],['재구매 주기','평균 7일',true],['할인 구매 비율','20% 이하',false],['마지막 구매','3주 이상',true]] },
+      { id:'review', nm:'리뷰 보고 망설이는 신규', risk:'전환 임박', cnt:'1,180', tone:'green',
+        why:'후기·Q&A를 반복해서 읽지만 <b>아직 첫 구매 전</b>입니다. 신뢰를 더할 한마디가 필요한 그룹입니다.',
+        beh:[['상세페이지 반복 방문',74,false,'7회 이상'],['후기·Q&A 조회',92,true,'10회 이상'],['할인 알림 클릭',28,false,'1회'],['최근 방문 추이',50,false,'유지']],
+        buy:[['누적 구매','0회',true],['재구매 주기','—',false],['할인 구매 비율','—',false],['상태','첫 구매 전',true]] },
+      { id:'price', nm:'가격 관망러', risk:'할인 트리거', cnt:'640', tone:'green',
+        why:'같은 상품 상세를 <b>반복해 보지만</b>, 과거 구매는 <b>할인 때만</b> 일어났습니다. 할인·재입고 신호에 반응합니다.',
+        beh:[['상세페이지 반복 방문',86,true,'8회 이상'],['후기·Q&A 조회',34,false,'2회'],['할인 알림 클릭',80,true,'5회 이상'],['최근 방문 추이',58,false,'증가']],
+        buy:[['누적 구매','3회 이상',false],['재구매 주기','불규칙',false],['할인 구매 비율','80% 이상',true],['마지막 구매','할인 시점',true]] }
+    ];
+  }
+  boot() {
+    if (!this.root || !this.seg) return;
+    this.applyEmbed();
+    this.SEG = this.data();
+    this.cards = this.SEG.map((s, i) => {
+      const card = document.createElement('div');
+      card.className = 's1seg' + (s.tone === 'amber' ? ' amber' : '');
+      card.innerHTML = '<div class="s1segtop"><span class="s1segnm">' + s.nm + '</span>' +
+        '<span class="s1risk' + (s.tone === 'amber' ? ' amber' : '') + '">' + s.risk + '</span>' +
+        '<span class="s1segcnt">' + s.cnt + '<small>명</small></span></div>' +
+        '<div class="s1why">' + s.why + '</div>';
+      card.addEventListener('click', () => this.select(i));
+      card.addEventListener('mouseenter', () => this.select(i));
+      this.seg.appendChild(card);
+      return card;
+    });
+    this.select(0);
+  }
+  select(i) {
+    const s = this.SEG[i];
+    this.cards.forEach((c, k) => c.classList.toggle('active', k === i));
+    this.bars.innerHTML = s.beh.map(([l, v, key, val]) =>
+      '<div class="s1brow' + (key ? ' key' : '') + (key && s.tone === 'amber' ? ' amber' : '') + '">' +
+        '<span class="s1bname">' + l + '</span>' +
+        '<div class="s1btrack"><i style="width:' + v + '%"></i></div>' +
+        '<span class="s1bval">' + val + '</span></div>').join('');
+    this.tiles.innerHTML = s.buy.map(([l, v, key]) =>
+      '<div class="s1tile' + (key ? ' key' : '') + (key && s.tone === 'amber' ? ' amber' : '') + '">' +
+        '<div class="tl">' + l + '</div><div class="tv">' + v + '</div></div>').join('');
+  }
+  renderVals() {
+    return {
+      rootRef: (el) => { this.root = el; },
+      barsRef: (el) => { this.bars = el; },
+      tilesRef: (el) => { this.tiles = el; },
+      segRef: (el) => { this.seg = el; }
+    };
+  }
+}
+</script>
+</body>
+</html>

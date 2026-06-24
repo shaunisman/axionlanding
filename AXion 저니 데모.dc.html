@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  @keyframes jPulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.6)}}
+  @keyframes jFocusPulse{0%,100%{box-shadow:0 1px 2px rgba(26,86,50,.06),0 16px 34px -18px rgba(26,86,50,.36),0 0 0 0 rgba(55,177,121,0)}50%{box-shadow:0 1px 2px rgba(26,86,50,.06),0 16px 34px -18px rgba(26,86,50,.42),0 0 0 4px rgba(55,177,121,.1)}}
+  @keyframes jSpin{to{transform:rotate(360deg)}}
+  @keyframes jPress{0%,100%{transform:none}45%{transform:scale(.955)}}
+  @keyframes jCurm{0%{opacity:0;transform:translate(46px,46px)}20%{opacity:1}70%,100%{opacity:1;transform:translate(-26px,-4px)}}
+
+  .jRoot{width:100%;display:flex;align-items:center;justify-content:center}
+  .jApp{width:100%;max-width:800px;border-radius:18px;overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:0 1px 3px rgba(15,32,24,.05),0 32px 72px -42px rgba(15,32,24,.5)}
+
+  .jTop{display:flex;align-items:center;gap:10px;padding:14px 18px;background:#fff;border-bottom:1px solid var(--line)}
+  .jLogo{width:25px;height:25px;border-radius:7px;background:linear-gradient(135deg,var(--accent),var(--green));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:13px;box-shadow:0 4px 10px -4px rgba(26,86,50,.5)}
+  .jCrumb{font-size:13px;color:var(--muted);font-weight:600}
+  .jCrumb b{color:var(--ink);font-weight:800}
+
+  .jVp{position:relative;height:400px;overflow:hidden;background:radial-gradient(circle at 50% 40%,rgba(26,86,50,.06) 0%,transparent 58%),radial-gradient(var(--line) 1.1px,transparent 1.1px);background-size:auto,26px 26px;background-color:#fbfdfc}
+  .jVp::after{content:'';position:absolute;left:-120px;top:120px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(55,177,121,.07),transparent 70%);pointer-events:none}
+  .jCanvas{position:absolute;top:0;left:0;width:1000px;height:1520px;transform-origin:0 0;transition:transform 1.3s cubic-bezier(.32,.02,.18,1)}
+
+  .jLinks{position:absolute;top:0;left:0;width:1000px;height:1520px;pointer-events:none;overflow:visible}
+  .jLinks path{fill:none;stroke:var(--path);stroke-width:2.4;stroke-linecap:round;transition:stroke-dashoffset 1s cubic-bezier(.4,0,.2,1),stroke .45s}
+  .jLinks path.drawn{stroke:var(--accent);filter:drop-shadow(0 0 3px rgba(55,177,121,.4))}
+  .jLinks path.loop{stroke-dasharray:7 8 !important;stroke:var(--green2)}
+  .jDot{fill:var(--accent);opacity:0;transition:opacity .5s ease;filter:drop-shadow(0 0 3px rgba(55,177,121,.55))}
+  .jDot.on{opacity:1}
+
+  .jLabel{position:absolute;transform:translate(-50%,-50%) scale(.9);opacity:0;font-size:11.5px;font-weight:700;color:var(--ink2);background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 12px;white-space:nowrap;box-shadow:0 8px 20px -12px rgba(15,32,24,.45);transition:opacity .45s ease,transform .45s cubic-bezier(.2,.8,.2,1);z-index:6;display:inline-flex;align-items:center;gap:7px}
+  .jLabel.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  .jLabel .dt{width:6px;height:6px;border-radius:50%;flex:0 0 auto;background:var(--accent)}
+  .jLabel.blue{color:var(--blue);border-color:#CADCF6}
+  .jLabel.blue .dt{background:var(--blue)}
+
+  .jNode{position:absolute;transform:translate(-50%,-50%) scale(.92);opacity:0;transition:opacity .55s cubic-bezier(.22,1.18,.36,1),transform .55s cubic-bezier(.22,1.18,.36,1);will-change:transform,opacity}
+  .jNode.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  .jBox{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 1px 2px rgba(15,32,24,.04),0 10px 24px -14px rgba(15,32,24,.2),0 28px 56px -34px rgba(15,32,24,.24);transition:box-shadow .5s,border-color .5s,transform .5s}
+  .jNode.focus .jBox{border-color:var(--accent);transform:translateY(-2px);animation:jFocusPulse 2.8s ease-in-out infinite}
+
+  .jHead{display:flex;align-items:center;gap:9px;padding:10px 13px;border-bottom:1px solid var(--line)}
+  .jIc{width:27px;height:27px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+  .jIc.g{background:var(--mint);color:var(--green2)}
+  .jIc.b{background:var(--bluebg);color:var(--blue)}
+  .jIc.a{background:var(--amberbg);color:#B07A1E}
+  .jTitle{font-size:13px;font-weight:800;letter-spacing:-.01em;color:var(--ink)}
+  .jMeta{margin-left:auto;font-size:10.5px;font-weight:700;color:var(--muted)}
+  .jBody{padding:11px 13px}
+
+  .jAnalyze{width:264px}
+  .jArow{display:flex;align-items:center;gap:9px;font-size:12px;color:var(--ink2);padding:5px 0}
+  .jArow .d{width:7px;height:7px;border-radius:2px;flex:0 0 auto}
+  .jArow .d.g{background:var(--green)}.jArow .d.b{background:var(--blue)}.jArow .d.a{background:var(--amber)}
+  .jArow .lnk{margin-left:auto;font-size:10px;font-weight:800;color:var(--green2);background:var(--mint);padding:3px 9px;border-radius:999px}
+  .jBig{margin-top:11px;padding-top:11px;border-top:1px dashed var(--line);display:flex;align-items:baseline;gap:7px}
+  .jBig b{font-size:26px;font-weight:800;color:var(--green);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+  .jBig span{font-size:11.5px;color:var(--muted)}
+
+  .jSeg{width:288px}
+  .jChips{display:flex;flex-direction:column;gap:9px}
+  .jChip{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff;transition:border-color .3s,background .3s,box-shadow .3s}
+  .jChip.pick{border-color:var(--accent);background:var(--mint2);box-shadow:0 10px 22px -16px rgba(26,86,50,.45)}
+  .jChip .sd{width:8px;height:8px;border-radius:50%;flex:0 0 auto}
+  .jChip .snm{font-size:12.5px;font-weight:700;color:var(--ink)}
+  .jChip .scn{margin-left:auto;font-size:12.5px;font-weight:800;font-variant-numeric:tabular-nums}
+  .jChip .pk{font-size:10px;font-weight:800;color:var(--green2);background:var(--mint);padding:3px 8px;border-radius:999px;margin-left:8px}
+
+  .jVar{width:236px}
+  .jBadge{width:22px;height:22px;border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:800;flex:0 0 auto}
+  .jA .jBadge{background:var(--green)}
+  .jB .jBadge{background:var(--blue)}
+  .jKch{display:flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;color:var(--ink2);margin-bottom:7px}
+  .jKdot{width:14px;height:14px;border-radius:4px;background:#FAE100;flex:0 0 auto}
+  .jBub{font-size:12px;line-height:1.6;color:var(--ink);background:var(--mint2);border-radius:5px 13px 13px 13px;padding:12px 13px}
+  .jB .jBub{background:var(--bluebg)}
+  .jBub b{font-weight:800}
+  .jBubTime{font-size:9.5px;color:var(--muted);text-align:right;margin-top:5px}
+  .jPills{display:flex;gap:6px;margin-top:10px}
+  .jPill{font-size:10.5px;font-weight:700;color:var(--ink2);background:var(--soft);border:1px solid var(--line);padding:4px 9px;border-radius:999px}
+
+  .jReview{width:268px}
+  .jReview .jBox{border-color:#EBD9B3}
+  .jReview.focus .jBox{border-color:var(--amber);animation:none;box-shadow:0 1px 2px rgba(224,162,59,.08),0 18px 36px -18px rgba(224,162,59,.42)}
+  .jChk{display:flex;align-items:center;gap:9px;font-size:12px;color:var(--ink2);padding:5px 0}
+  .jChk .cb{width:17px;height:17px;border-radius:6px;background:var(--mint);color:var(--green2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex:0 0 auto}
+  .jApprove{margin-top:12px;position:relative}
+  .jApprove .b{width:100%;padding:12px;border-radius:11px;background:var(--green);color:#fff;font-size:13px;font-weight:800;text-align:center;box-shadow:0 12px 26px -12px rgba(26,86,50,.6);transition:transform .15s,background .25s;display:flex;align-items:center;justify-content:center;gap:7px}
+  .jReview.approve .jApprove .b{animation:jPress .6s 1s both;background:var(--green2)}
+  .jApprove .cur{position:absolute;width:22px;height:22px;right:26px;bottom:0;opacity:0;z-index:30;filter:drop-shadow(0 2px 3px rgba(0,0,0,.28))}
+  .jReview.approve .jApprove .cur{animation:jCurm 1.7s cubic-bezier(.3,.55,.2,1) forwards}
+
+  .jResult{width:300px}
+  .jRrow{margin-bottom:11px}
+  .jRl{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--ink2);margin-bottom:6px}
+  .jRl .jBadge{width:18px;height:18px;font-size:10px;border-radius:5px}
+  .jRl b{margin-left:auto;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
+  .jBar{height:9px;border-radius:999px;background:var(--soft);overflow:hidden}
+  .jBar i{display:block;height:100%;width:0;border-radius:999px;transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
+  .jRrow.A .jBar i{background:linear-gradient(90deg,var(--accent),var(--green))}
+  .jRrow.B .jBar i{background:linear-gradient(90deg,#5C92E0,var(--blue))}
+  .jWin{margin-top:11px;padding-top:11px;border-top:1px dashed var(--line);font-size:11.5px;font-weight:700;color:var(--green2);display:flex;align-items:center;gap:7px}
+  .jWin .sp{animation:jSpin 2.6s linear infinite;display:inline-block}
+
+  .jFoot{display:flex;align-items:center;gap:12px;padding:15px 20px;background:#fff;border-top:1px solid var(--line)}
+  .jStepno{display:inline-flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:800;color:var(--green2);background:var(--mint);border-radius:8px;padding:5px 10px;min-width:52px;font-variant-numeric:tabular-nums}
+  .jCap{font-size:13.5px;font-weight:600;color:var(--ink);letter-spacing:-.01em}
+  .jCap b{color:var(--green2);font-weight:800}
+  .jProg{margin-left:auto;display:flex;gap:6px;align-items:center}
+  .jPdot{width:7px;height:7px;border-radius:50%;background:var(--line);transition:.3s}
+  .jPdot.on{background:var(--accent);transform:scale(1.25)}
+  .jReplay{margin-left:12px;display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--muted);background:var(--soft);border:1px solid var(--line);padding:7px 12px;border-radius:999px;cursor:pointer;transition:.2s}
+  .jReplay:hover{color:var(--green2);border-color:var(--accent)}
+
+  @media (prefers-reduced-motion: reduce){
+    .jNode,.jBox,.jLinks path,.jLabel,.jBar i,.jCanvas{transition-duration:.01ms !important;animation:none !important}
+  }
+  @media(max-width:680px){.jVp{height:400px}.jCap{font-size:12px}}
+</style>
+</helmet>
+
+<div ref="{{ rootRef }}" class="jRoot" style="--green:#1A5632;--accent:#37B179;--green2:#21724A;--mint:#E7F2EB;--mint2:#F2F8F4;--ink:#13261C;--ink2:#52645A;--muted:#90A096;--line:#E5ECE8;--soft:#F6F9F7;--blue:#2D6FD6;--bluebg:#EAF1FC;--amber:#E0A23B;--amberbg:#FBF3E3;--path:#CBD6CF;font-family:'Pretendard',system-ui,sans-serif;color:var(--ink);min-height:100vh;background:radial-gradient(120% 80% at 50% -10%,#EEF6F0,#F7F8F6 55%);padding:40px 18px">
+
+  <div class="jApp">
+
+    <div class="jVp">
+      <div class="jCanvas">
+
+        <svg class="jLinks" viewBox="0 0 1000 1520">
+          <path id="jp1" d="M500,195 C500,260 500,300 500,355"></path>
+          <path id="jp2a" d="M450,505 C380,575 310,610 310,655"></path>
+          <path id="jp2b" d="M550,505 C620,575 690,610 690,655"></path>
+          <path id="jp3a" d="M310,805 C310,870 430,905 490,922"></path>
+          <path id="jp3b" d="M690,805 C690,870 570,905 510,922"></path>
+          <path id="jp4" d="M500,1095 C500,1170 500,1220 500,1285"></path>
+          <path id="jploop" class="loop" d="M670,1390 C920,1370 960,900 960,600 C960,260 770,150 612,140"></path>
+          <circle class="jDot" id="jd1" cx="500" cy="357" r="4"></circle>
+          <circle class="jDot" id="jd2" cx="500" cy="500" r="4"></circle>
+          <circle class="jDot" id="jd3" cx="500" cy="906" r="4"></circle>
+          <circle class="jDot" id="jd4" cx="500" cy="1287" r="4"></circle>
+        </svg>
+
+        <div class="jNode jAnalyze" data-x="500" data-y="120" style="left:500px;top:120px">
+          <div class="jBox">
+            <div class="jHead">
+              <span class="jIc g"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V11M12 21V4M19 21v-6"></path><path d="M3 21h18"></path></svg></span>
+              <span class="jTitle">고객 데이터 분석</span>
+              <span class="jMeta">진입</span>
+            </div>
+            <div class="jBody">
+              <div class="jArow"><span class="d g"></span>카페24 주문 내역<span class="lnk">연결</span></div>
+              <div class="jArow"><span class="d b"></span>자사몰 행동 로그<span class="lnk">연결</span></div>
+              <div class="jArow"><span class="d a"></span>과거 캠페인 성과<span class="lnk">연결</span></div>
+              <div class="jBig"><b>12,400</b><span>명 분석 중</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="jNode jSeg" data-x="500" data-y="430" style="left:500px;top:430px">
+          <div class="jBox">
+            <div class="jHead">
+              <span class="jIc g"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8.5"></circle><circle cx="12" cy="12" r="3.4"></circle></svg></span>
+              <span class="jTitle">세그먼트 자동 분류</span>
+              <span class="jMeta">3개 발굴</span>
+            </div>
+            <div class="jBody">
+              <div class="jChips">
+                <div class="jChip"><span class="sd" style="background:var(--blue)"></span><span class="snm">장바구니 이탈</span><span class="scn" style="color:var(--blue)">1,240</span></div>
+                <div class="jChip pick"><span class="sd" style="background:var(--green)"></span><span class="snm">재구매 임박 단골</span><span class="scn" style="color:var(--green)">540</span><span class="pk">대상 선택</span></div>
+                <div class="jChip"><span class="sd" style="background:var(--amber)"></span><span class="snm">휴면 직전</span><span class="scn" style="color:var(--amber)">320</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="jNode jVar jA" data-x="310" data-y="730" style="left:310px;top:730px">
+          <div class="jBox">
+            <div class="jHead"><span class="jBadge">A</span><span class="jTitle">캠페인 · 혜택 강조</span><span class="jMeta">실험군 A</span></div>
+            <div class="jBody">
+              <div class="jKch"><span class="jKdot"></span>카카오 알림톡</div>
+              <div class="jBub">서연님, 단골 고객님께만 드리는 <b>10% 쿠폰</b>이 도착했어요. 재구매 시기에 맞춰 준비했습니다.</div>
+              <div class="jBubTime">오후 2:14</div>
+              <div class="jPills"><span class="jPill">혜택 캠페인</span><span class="jPill">발송 270명</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="jNode jVar jB" data-x="690" data-y="730" style="left:690px;top:730px">
+          <div class="jBox">
+            <div class="jHead"><span class="jBadge">B</span><span class="jTitle">캠페인 · 관계 강조</span><span class="jMeta">실험군 B</span></div>
+            <div class="jBody">
+              <div class="jKch"><span class="jKdot"></span>카카오 알림톡</div>
+              <div class="jBub">서연님, 지난번 그 제품 쓸 때 되지 않으셨어요? 늘 찾아주셔서 작은 혜택 하나 챙겨뒀어요.</div>
+              <div class="jBubTime">오후 2:14</div>
+              <div class="jPills"><span class="jPill">관리 캠페인</span><span class="jPill">발송 270명</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="jNode jReview" data-x="500" data-y="1010" style="left:500px;top:1010px">
+          <div class="jBox">
+            <div class="jHead">
+              <span class="jIc a"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.2-2.9 7.6-7 9-4.1-1.4-7-4.8-7-9V6z"></path><path d="M9 12l2 2 4-4"></path></svg></span>
+              <span class="jTitle">검수</span>
+              <span class="jMeta">사람 1회</span>
+            </div>
+            <div class="jBody">
+              <div class="jChk"><span class="cb">✓</span>대상 세그먼트 정확도</div>
+              <div class="jChk"><span class="cb">✓</span>메시지 톤·금칙어</div>
+              <div class="jChk"><span class="cb">✓</span>발송 시간·채널</div>
+              <div class="jApprove">
+                <div class="b">검수 완료 · 발송 승인</div>
+                <svg class="cur" viewBox="0 0 24 24" fill="#13261C"><path d="M4 2l16 8-7 2-2 7z"></path></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="jNode jResult" data-x="500" data-y="1360" style="left:500px;top:1360px">
+          <div class="jBox">
+            <div class="jHead">
+              <span class="jIc g"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16l5-5 3 3 7-8"></path><path d="M16 6h4v4"></path></svg></span>
+              <span class="jTitle">성과 비교 · 학습</span>
+              <span class="jMeta">A/B 결과</span>
+            </div>
+            <div class="jBody">
+              <div class="jRrow A">
+                <div class="jRl"><span class="jBadge">A</span>혜택 강조 · 전환<b data-v="11">11%</b></div>
+                <div class="jBar"><i data-w="44%"></i></div>
+              </div>
+              <div class="jRrow B">
+                <div class="jRl"><span class="jBadge">B</span>관계 강조 · 전환<b data-v="18">18%</b></div>
+                <div class="jBar"><i data-w="72%"></i></div>
+              </div>
+              <div class="jWin"><span class="sp">↻</span>B안 채택 → 학습 결과를 ①분석에 반영</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="jLabel" id="jlab1" style="left:500px;top:280px"><span class="dt"></span>고객 12,400명</div>
+        <div class="jLabel" id="jlab2" style="left:500px;top:580px"><span class="dt"></span>재구매 임박 540명</div>
+        <div class="jLabel" id="jlabA" style="left:388px;top:878px"><span class="dt"></span>A안 · 270명</div>
+        <div class="jLabel blue" id="jlabB" style="left:612px;top:878px"><span class="dt"></span>B안 · 270명</div>
+        <div class="jLabel" id="jlab5" style="left:500px;top:1180px"><span class="dt"></span>발송 540건 · 자동 발송</div>
+        <div class="jLabel" id="jlabLoop" style="left:930px;top:560px"><span class="dt"></span>학습 반영 ↻</div>
+
+      </div>
+    </div>
+
+    <div class="jFoot">
+      <span class="jStepno">1 / 6</span>
+      <span class="jCap"></span>
+      <div class="jProg"></div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:960,&quot;height&quot;:700},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#37B179&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#37B179&quot;,&quot;#2FA36B&quot;,&quot;#1A5632&quot;,&quot;#2D6FD6&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;embedded&quot;:{&quot;editor&quot;:null,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  componentDidMount() { this.boot(); }
+  componentWillUnmount() {
+    this.clearT();
+    if (this._raf) cancelAnimationFrame(this._raf);
+    if (this._vis) document.removeEventListener('visibilitychange', this._vis);
+  }
+  componentDidUpdate() { this.applyTokens(); this.applyEmbed(); }
+
+  applyTokens() {
+    if (!this.root) return;
+    const p = this.props || {};
+    if (p.accent) this.root.style.setProperty('--accent', p.accent);
+  }
+  applyEmbed() {
+    if (!this.root) return;
+    const emb = this.props && this.props.embedded;
+    this.root.style.background = emb ? 'transparent' : 'radial-gradient(120% 80% at 50% -10%,#EEF6F0,#F7F8F6 55%)';
+    this.root.style.minHeight = emb ? '0' : '100vh';
+    this.root.style.padding = emb ? '0' : '40px 18px';
+  }
+
+  q(s) { return this.root.querySelector(s); }
+  qa(s) { return [...this.root.querySelectorAll(s)]; }
+  clearT() { (this._t || []).forEach(t => clearTimeout(t)); this._t = []; }
+  at(ms, fn) { this._t.push(setTimeout(fn, ms)); }
+
+  boot() {
+    if (!this.root) return;
+    this.applyTokens(); this.applyEmbed();
+    this._t = [];
+    this.vp = this.q('.jVp');
+    this.canvas = this.q('.jCanvas');
+    this.nodes = this.qa('.jNode');
+    this.cap = this.q('.jCap');
+    this.stepno = this.q('.jStepno');
+    this.prog = this.q('.jProg');
+    this.N = { analyze: 0, seg: 1, A: 2, B: 3, review: 4, result: 5 };
+    this.paths = ['jp1','jp2a','jp2b','jp3a','jp3b','jp4','jploop'].map(id => this.q('#' + id));
+    this.CAPS = [
+      ['1 / 6', '흩어진 고객 데이터를 <b>AXion이 한곳에서 읽습니다</b>'],
+      ['2 / 6', '행동·주문 신호로 <b>세그먼트를 자동 분류</b>합니다'],
+      ['3 / 6', '한 그룹에 <b>두 갈래 캠페인(A/B)</b>을 자동 생성합니다'],
+      ['4 / 6', '<b>사람은 여기서 한 번만</b> — 검수하고 승인합니다'],
+      ['5 / 6', '승인되면 <b>사람 손 없이 자동 발송</b>됩니다'],
+      ['6 / 6', '성과를 비교해 <b>이긴 안을 학습</b> → 다음 캠페인이 더 정확해집니다']
+    ];
+    this.prog.innerHTML = '';
+    for (let k = 0; k < 6; k++) { const d = document.createElement('span'); d.className = 'jPdot'; this.prog.appendChild(d); }
+    this.pdots = [...this.prog.children];
+    this.paths.forEach(p => { const L = p.getTotalLength(); p.dataset.len = L; p.style.strokeDasharray = L; p.style.strokeDashoffset = L; });
+
+    const rep = this.q('.jReplay');
+    if (rep) rep.onclick = () => this.run();
+    this._vis = () => { if (document.hidden) this.clearT(); else this.run(); };
+    document.addEventListener('visibilitychange', this._vis);
+
+    if (this.props && this.props.motion === false) this.staticEnd();
+    else this.run();
+  }
+
+  drawPath(p) { p.style.strokeDashoffset = 0; p.classList.add('drawn'); }
+  resetPath(p) { const L = p.dataset.len; p.style.transition = 'none'; p.style.strokeDashoffset = L; p.classList.remove('drawn'); void p.getBoundingClientRect(); p.style.transition = ''; }
+  showLab(id) { const e = this.q('#' + id); if (e) e.classList.add('on'); }
+  setDot(id) { const e = this.q('#' + id); if (e) e.classList.add('on'); }
+  cam(fx, fy, scale) {
+    const w = this.vp.clientWidth, h = this.vp.clientHeight;
+    const tx = w / 2 - fx * scale, ty = h / 2 - fy * scale;
+    this.canvas.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + scale + ')';
+  }
+  nodeCenter(i) { return [parseFloat(this.nodes[i].dataset.x), parseFloat(this.nodes[i].dataset.y)]; }
+  setCap(s) { this.stepno.textContent = this.CAPS[s][0]; this.cap.innerHTML = this.CAPS[s][1]; this.pdots.forEach((d, k) => d.classList.toggle('on', k <= s)); }
+  focus(i) { this.nodes.forEach((n, k) => n.classList.toggle('focus', k === i)); }
+  setBars(on) {
+    this.qa('.jBar i').forEach(i => { i.style.width = on ? i.dataset.w : '0'; });
+    this.countUp(on);
+  }
+  countUp(on) {
+    if (this._raf) cancelAnimationFrame(this._raf);
+    const els = this.qa('.jRl b');
+    if (!on) { els.forEach(b => b.textContent = '0%'); return; }
+    const t0 = performance.now(), dur = 1050;
+    const tick = (now) => {
+      const k = Math.min(1, (now - t0) / dur);
+      const e = 1 - Math.pow(1 - k, 3);
+      els.forEach(b => { b.textContent = Math.round(parseInt(b.dataset.v, 10) * e) + '%'; });
+      if (k < 1) this._raf = requestAnimationFrame(tick);
+    };
+    this._raf = requestAnimationFrame(tick);
+  }
+  reset() {
+    this.clearT();
+    this.nodes.forEach(n => n.classList.remove('on', 'focus', 'approve'));
+    this.paths.forEach(p => this.resetPath(p));
+    this.qa('.jLabel').forEach(l => l.classList.remove('on'));
+    this.qa('.jDot').forEach(d => d.classList.remove('on'));
+    this.setBars(false);
+    this.pdots.forEach(d => d.classList.remove('on'));
+  }
+  run() {
+    this.reset();
+    this.cam(this.nodeCenter(this.N.analyze)[0], this.nodeCenter(this.N.analyze)[1], 1);
+    this.nodes[this.N.analyze].classList.add('on'); this.focus(this.N.analyze); this.setCap(0);
+
+    this.at(2800, () => { this.drawPath(this.paths[0]); this.setDot('jd1'); this.showLab('jlab1'); this.setCap(1); this.cam(this.nodeCenter(this.N.seg)[0], this.nodeCenter(this.N.seg)[1], 1); });
+    this.at(3100, () => { this.nodes[this.N.seg].classList.add('on'); this.focus(this.N.seg); });
+
+    this.at(6000, () => { this.setCap(2); this.cam(500, 730, .92); this.drawPath(this.paths[1]); this.drawPath(this.paths[2]); this.setDot('jd2'); this.showLab('jlab2'); });
+    this.at(6300, () => { this.nodes[this.N.A].classList.add('on'); this.nodes[this.N.B].classList.add('on'); this.focus(this.N.A); });
+
+    this.at(9600, () => { this.setCap(3); this.drawPath(this.paths[3]); this.drawPath(this.paths[4]); this.setDot('jd3'); this.showLab('jlabA'); this.showLab('jlabB'); this.cam(this.nodeCenter(this.N.review)[0], this.nodeCenter(this.N.review)[1], 1); });
+    this.at(9900, () => { this.nodes[this.N.review].classList.add('on'); this.focus(this.N.review); });
+    this.at(10800, () => { this.nodes[this.N.review].classList.add('approve'); });
+
+    this.at(13400, () => { this.setCap(4); this.drawPath(this.paths[5]); this.setDot('jd4'); this.showLab('jlab5'); this.cam(500, 1215, 1); });
+
+    this.at(14800, () => { this.setCap(5); this.cam(this.nodeCenter(this.N.result)[0], this.nodeCenter(this.N.result)[1], 1); });
+    this.at(15100, () => { this.nodes[this.N.result].classList.add('on'); this.focus(this.N.result); });
+    this.at(15700, () => this.setBars(true));
+
+    this.at(18900, () => { this.cam(560, 745, .35); this.focus(-1); });
+    this.at(19600, () => { this.drawPath(this.paths[6]); this.showLab('jlabLoop'); });
+    this.at(22900, () => this.run());
+  }
+  staticEnd() {
+    this.nodes.forEach(n => n.classList.add('on'));
+    this.paths.forEach(p => this.drawPath(p));
+    this.qa('.jLabel').forEach(l => l.classList.add('on'));
+    this.qa('.jDot').forEach(d => d.classList.add('on'));
+    this.setBars(true);
+    this.setCap(5);
+    this.cam(560, 745, .35);
+  }
+  renderVals() {
+    return { rootRef: (el) => { this.root = el; } };
+  }
+}
+</script>
+</body>
+</html>

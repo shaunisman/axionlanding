@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+
+  .f2Cmp{display:grid;grid-template-columns:.88fr 1.12fr;gap:18px;align-items:center;max-width:1040px;margin:0 auto}
+  @media(max-width:860px){.f2Cmp{grid-template-columns:1fr}}
+
+  .f2Col{border-radius:18px;padding:16px;display:flex;flex-direction:column}
+  .f2Col.bad{background:linear-gradient(180deg,#FCFDFD,#F4F6F5);border:1px solid var(--line);box-shadow:0 1px 2px rgba(15,32,24,.03),0 10px 22px -16px rgba(15,32,24,.16),0 30px 56px -40px rgba(15,32,24,.2);opacity:.92;transform:scale(.975);transform-origin:center}
+  .f2Col.good{position:relative;overflow:hidden;background:#fff;border:1.5px solid var(--accent);box-shadow:0 1px 2px rgba(15,32,24,.05),0 20px 40px -18px rgba(26,86,50,.34),0 56px 90px -46px rgba(26,86,50,.46);transform:scale(1.04);transform-origin:center;z-index:2}
+  .f2Col.good::before{content:"";position:absolute;top:-50px;right:-50px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(55,177,121,.2),transparent 70%);pointer-events:none}
+
+  .f2Head{font-size:15px;font-weight:800;letter-spacing:-.02em;position:relative}
+  .f2Col.bad .f2Head{color:#6E7873}
+  .f2Col.good .f2Head{color:var(--ink)}
+  .f2Desc{font-size:11.5px;margin-top:5px;word-break:keep-all;line-height:1.45;position:relative}
+  .f2Col.bad .f2Desc{color:#8A938E}
+  .f2Col.good .f2Desc{color:var(--ink2)}
+
+  .f2Learn{margin-top:11px;display:flex;flex-direction:column;gap:7px;position:relative}
+  .f2Toggle{width:34px;height:20px;border-radius:999px;background:var(--accent);position:relative;flex:0 0 auto;transition:background .25s}
+  .f2Toggle::after{content:"";position:absolute;top:2px;left:16px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:left .25s}
+  .f2Toggle.off{background:#D5DCD8}
+  .f2Toggle.off::after{left:2px}
+
+  .f2Acc{background:#fff;border:1px solid var(--line);border-radius:13px;overflow:hidden;transition:box-shadow .25s,border-color .25s}
+  .f2Acc:hover{border-color:#CFE3D6;box-shadow:0 10px 24px -18px rgba(26,86,50,.4)}
+  .f2Acc.open{box-shadow:0 16px 34px -20px rgba(15,32,24,.34);border-color:#C5E0CF}
+  .f2AccH{display:flex;align-items:center;gap:11px;padding:10px 13px;cursor:pointer;user-select:none}
+  .f2AccT{font-size:13px;font-weight:800;letter-spacing:-.01em;color:var(--ink)}
+  .f2Chev{margin-left:auto;color:var(--muted);font-size:13px;transition:transform .28s cubic-bezier(.3,.8,.3,1)}
+  .f2Acc.open .f2Chev{transform:rotate(90deg);color:var(--green2)}
+  .f2Body{max-height:0;overflow:hidden;transition:max-height .34s cubic-bezier(.3,.8,.3,1),padding-bottom .34s ease;padding:0 14px}
+  .f2Acc.open .f2Body{max-height:280px;padding-bottom:12px}
+  .f2BDesc{font-size:12px;color:var(--ink2);line-height:1.5;word-break:keep-all}
+  .f2UL{margin:8px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+  .f2LI{position:relative;padding-left:15px;font-size:12px;color:var(--ink2);line-height:1.45;word-break:keep-all}
+  .f2LI::before{content:"";position:absolute;left:3px;top:7px;width:4px;height:4px;border-radius:50%;background:var(--accent)}
+  .f2Note{display:flex;align-items:center;gap:7px;font-size:11.5px;font-weight:700;color:var(--green2);background:var(--mint2);border:1px solid #D8EADF;border-radius:9px;padding:7px 11px;margin-top:9px}
+  .f2Note .nd{width:6px;height:6px;border-radius:50%;background:var(--accent);flex:0 0 auto}
+
+  .f2Phone{margin-top:11px;border:1px solid var(--line);border-radius:14px;overflow:hidden;flex:1;display:flex;flex-direction:column}
+  .f2Col.bad .f2Phone{background:#EEF1F0;border-color:#E1E5E3}
+  .f2Col.good .f2Phone{background:#fff}
+  .f2PTop{display:flex;align-items:center;gap:9px;padding:11px 14px;border-bottom:1px solid var(--line)}
+  .f2Col.bad .f2PTop{background:#F4F6F5}
+  .f2Av{width:27px;height:27px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex:0 0 auto}
+  .f2Col.bad .f2Av{background:var(--gray)}
+  .f2Name{font-size:12.5px;font-weight:800;color:var(--ink)}
+  .f2Name small{display:block;font-size:10.5px;font-weight:600;color:var(--muted)}
+  .f2Chat{padding:11px;display:flex;flex-direction:column;gap:8px;flex:1}
+  .f2To{font-size:10.5px;font-weight:700;color:var(--muted);margin-bottom:-5px}
+  .f2Bub{font-size:11.5px;line-height:1.5;padding:9px 12px;border-radius:4px 12px 12px 12px;max-width:94%}
+  .f2Col.bad .f2Bub{background:#fff;color:#727C76;border:1px solid #E3E7E5}
+  .f2Col.good .f2Bub{background:var(--mint2);color:var(--ink);border:1px solid #D8EADF;box-shadow:0 8px 18px -14px rgba(26,86,50,.3)}
+  .f2Col.good .f2Bub b{font-weight:800;color:var(--green2)}
+  .f2Dots{text-align:center;color:var(--gray);font-size:22px;font-weight:800;line-height:.7;margin-top:3px;letter-spacing:.08em}
+  .f2Ctx{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+  .f2Ctx span{font-size:10px;font-weight:700;color:var(--green2);background:var(--mint);padding:4px 9px;border-radius:999px}
+
+  @media (prefers-reduced-motion: reduce){.f2Body,.f2Chev,.f2Toggle::after,.f2Toggle,.f2Acc{transition-duration:.01ms !important}}
+</style>
+</helmet>
+
+<div ref="{{ rootRef }}" style="--green:#1A5632;--accent:#37B179;--green2:#21724A;--mint:#E7F2EB;--mint2:#F2F8F4;--ink:#13261C;--ink2:#52645A;--muted:#90A096;--line:#E5ECE8;--soft:#F6F9F7;--gray:#9AA4A0;--graybg:#EEF1F0;font-family:'Pretendard',system-ui,sans-serif;color:var(--ink);min-height:100vh;background:linear-gradient(180deg,#EAF3ED,#F6F9F7 55%,#fff);padding:44px 24px;display:flex;align-items:center;justify-content:center">
+
+  <div class="f2Cmp">
+
+    <div class="f2Col bad">
+      <div class="f2Head">모두에게 같은 메시지</div>
+      <div class="f2Desc">이름만 바뀐 똑같은 문장이 전 고객에게 발송됩니다.<br /><span style="white-space:nowrap">브랜드도, 고객의 사정도 담기지 않습니다.</span></div>
+
+      <div class="f2Phone">
+        <div class="f2PTop"><div class="f2Av">T</div><div class="f2Name">일반 템플릿<small>대량 발송</small></div></div>
+        <div class="f2Chat">
+          <div class="f2To">→ 서연 고객님</div>
+          <div class="f2Bub">고객님 안녕하세요! 특별 할인 쿠폰을 드립니다. 지금 구매하세요.</div>
+          <div class="f2To">→ 민준 고객님</div>
+          <div class="f2Bub">고객님 안녕하세요! 특별 할인 쿠폰을 드립니다. 지금 구매하세요.</div>
+          <div class="f2To" style="opacity:.55">→ 지우 고객님</div>
+          <div class="f2Bub" style="opacity:.55">고객님 안녕하세요! 특별 할인 쿠폰을 드립니다. 지금 구매하세요.</div>
+          <div class="f2Dots">⋮</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="f2Col good">
+      <div class="f2Head">브랜드를 학습해, 이 브랜드만의 한 마디</div>
+      <div class="f2Desc">캠페인 톤앤매너 위에서 브랜드 데이터를 학습해, 고객마다 맥락에 맞는 메시지를 만듭니다.</div>
+
+      <div class="f2Learn">
+        <div class="f2Acc">
+          <div class="f2AccH"><span class="f2Toggle off"></span><span class="f2AccT">지난 캠페인 성과</span><span class="f2Chev">›</span></div>
+          <div class="f2Body">
+            <div class="f2BDesc">지금까지 보낸 캠페인의 반응을 학습합니다.</div>
+            <ul class="f2UL"><li class="f2LI">어떤 혜택과 표현이 구매로 이어졌는지 기억합니다.</li><li class="f2LI">성과가 낮았던 표현은 다음 캠페인에서 줄입니다.</li></ul>
+            <div class="f2Note"><span class="nd"></span>14개 캠페인 학습 완료</div>
+          </div>
+        </div>
+        <div class="f2Acc open">
+          <div class="f2AccH"><span class="f2Toggle"></span><span class="f2AccT">자사몰·웹사이트 데이터</span><span class="f2Chev">›</span></div>
+          <div class="f2Body">
+            <div class="f2BDesc">상품 정보와 고객 행동을 읽어 메시지에 반영합니다.</div>
+            <ul class="f2UL"><li class="f2LI">베스트셀러·후기·재고 상태를 메시지에 활용합니다.</li><li class="f2LI">어떤 상품에서 망설이다 이탈했는지 파악합니다.</li></ul>
+            <div class="f2Note"><span class="nd"></span>상품 320개 · 후기 1.2만 건 학습</div>
+          </div>
+        </div>
+        <div class="f2Acc">
+          <div class="f2AccH"><span class="f2Toggle off"></span><span class="f2AccT">브랜드 이벤트·시즌</span><span class="f2Chev">›</span></div>
+          <div class="f2Body">
+            <div class="f2BDesc">진행 중인 프로모션과 시즌을 메시지에 반영합니다.</div>
+            <ul class="f2UL"><li class="f2LI">재입고·앵콜 세일 같은 이벤트를 자동으로 반영합니다.</li><li class="f2LI">신상 출시와 시즌 시점에 맞춰 캠페인을 준비합니다.</li></ul>
+            <div class="f2Note"><span class="nd"></span>진행 중 이벤트 3건 연동</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="f2Phone">
+        <div class="f2Chat">
+          <div class="f2To">→ 서연 고객님 · 재구매 임박 단골</div>
+          <div class="f2Bub">서연님, 지난여름 즐겨 쓰신 <b>수분크림</b> 재구매 시기가 다가왔어요. 이번 주말 단골 고객님께만 드리는 <b>앵콜 혜택</b>, 먼저 챙겨드릴게요 🎁</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1080,&quot;height&quot;:640},&quot;embedded&quot;:{&quot;editor&quot;:null,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  componentDidMount() { this.boot(); }
+  componentDidUpdate() { this.applyEmbed(); }
+  applyEmbed() {
+    if (!this.root) return;
+    const emb = this.props && this.props.embedded;
+    this.root.style.background = emb ? 'transparent' : 'linear-gradient(180deg,#EAF3ED,#F6F9F7 55%,#fff)';
+    this.root.style.minHeight = emb ? '0' : '100vh';
+    this.root.style.padding = emb ? '0' : '44px 24px';
+  }
+  boot() {
+    if (!this.root) return;
+    this.applyEmbed();
+    const accs = [...this.root.querySelectorAll('.f2Acc')];
+    accs.forEach(acc => {
+      const h = acc.querySelector('.f2AccH');
+      h.addEventListener('click', () => {
+        const wasOpen = acc.classList.contains('open');
+        accs.forEach(a => {
+          a.classList.remove('open');
+          const t = a.querySelector('.f2Toggle');
+          if (t) t.classList.add('off');
+        });
+        if (!wasOpen) {
+          acc.classList.add('open');
+          const t = acc.querySelector('.f2Toggle');
+          if (t) t.classList.remove('off');
+        }
+      });
+    });
+  }
+  renderVals() {
+    return { rootRef: (el) => { this.root = el; } };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+# 프로젝트 내보내기 zip — 113MB, GitHub 100MB 제한 초과
+승인 대기 UI 목업.zip
+*.zip
+
+# OS / 에디터
+.DS_Store
+Thumbs.db

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  .fqItem{border-bottom:1px solid var(--line)}
+  .fqQ{display:flex;align-items:center;gap:18px;width:100%;background:none;border:none;cursor:pointer;font-family:inherit;text-align:left;padding:24px 4px;color:var(--ink);transition:color .2s}
+  .fqQ:hover{color:var(--green2)}
+  .fqQt{font-size:clamp(15px,1.9vw,18px);font-weight:700;letter-spacing:-.01em;line-height:1.45;word-break:keep-all;flex:1}
+  .fqItem.open .fqQt{color:var(--green2);font-weight:800}
+  .fqIco{flex:0 0 auto;width:22px;height:22px;position:relative}
+  .fqIco::before,.fqIco::after{content:"";position:absolute;background:var(--muted);border-radius:2px;transition:transform .3s cubic-bezier(.3,.8,.3,1),background .2s}
+  .fqIco::before{top:10px;left:2px;right:2px;height:2px}
+  .fqIco::after{left:10px;top:2px;bottom:2px;width:2px}
+  .fqItem.open .fqIco::after{transform:scaleY(0)}
+  .fqItem.open .fqIco::before{background:var(--green2)}
+  .fqItem.open .fqIco::after{background:var(--green2)}
+  .fqA{max-height:0;overflow:hidden;transition:max-height .42s cubic-bezier(.3,.8,.3,1),opacity .32s ease,padding-bottom .42s ease;opacity:0}
+  .fqItem.open .fqA{max-height:360px;opacity:1;padding-bottom:24px}
+  .fqAt{font-size:clamp(13.5px,1.6vw,15px);line-height:1.78;color:var(--ink2);font-weight:400;word-break:keep-all;padding-right:40px;margin:0}
+  @media (prefers-reduced-motion: reduce){.fqA,.fqIco::before,.fqIco::after{transition-duration:.01ms !important}}
+</style>
+</helmet>
+
+<div ref="{{ rootRef }}" style="--green:#1A5632;--accent:#37B179;--green2:#21724A;--mint:#E7F2EB;--ink:#13261C;--ink2:#52645A;--muted:#90A096;--line:#E6ECE8;font-family:'Pretendard',system-ui,sans-serif;color:var(--ink);background:#fff;padding:0">
+
+  <div style="max-width:820px;margin:0 auto">
+    <h2 style="font-size:clamp(27px,3.3vw,40px);line-height:1.28;letter-spacing:-.02em;font-weight:800;color:var(--ink);text-align:center;margin:0 0 36px">자주 묻는 질문</h2>
+
+    <div ref="{{ listRef }}"></div>
+
+    <div style="text-align:center;margin-top:38px;font-size:14px;color:var(--ink2);font-weight:500">
+      더 궁금한 점이 있으신가요? <a href="#axCta" style="color:var(--green2);font-weight:800;text-decoration:none;border-bottom:1.5px solid transparent;transition:border-color .2s" style-hover="border-bottom-color:var(--green2)">사전등록 후 1:1로 안내드립니다 →</a>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:860,&quot;height&quot;:640},&quot;embedded&quot;:{&quot;editor&quot;:null,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  componentDidMount() { this.boot(); }
+  boot() {
+    if (!this.root || !this.list) return;
+    const QA = [
+      ['AXion은 CRM을 어떻게 자동화하나요?',
+       '분석부터 세그먼트 분류, 메시지 작성, A/B 테스트, 발송, 성과 학습까지 반복되는 운영을 AXion이 자동으로 수행합니다. 사람은 발송 전 검수 한 번으로 대상과 문구를 확인하고 승인하면 됩니다. 반복 작업은 AXion이, 최종 판단은 사람이 맡습니다.'],
+      ['광고비는 쓰는데 재구매가 안 늘어요. AXion이 도움이 될까요?',
+       '네. AXion은 광고로 데려온 고객이 한 번 사고 떠나는 지점을 잡습니다. 이미 자사몰에 들어온 고객의 행동·구매 데이터를 분석해, 알맞은 시점에 맞춤 메시지를 보내 재구매를 늘리고 이탈을 막습니다. 신규 유입을 늘리는 광고가 아니라, 들어온 고객의 가치를 키우는 리텐션 CRM입니다.'],
+      ['고객 데이터를 어떻게 분석해 세그먼트를 만드나요?',
+       '카페24 주문 로그(구매 주기·금액·카테고리)와 자사몰 행동 로그(방문·상세 조회·장바구니·후기 열람)를 함께 읽습니다. 두 데이터가 겹치는 지점에서 ‘재구매 주기를 넘긴 단골’처럼 한 데이터만으로는 보이지 않던 그룹을 자동으로 찾아냅니다. 그래서 단순 휴면·장바구니 분류보다 정교한, 매출로 이어질 그룹을 잡아냅니다.'],
+      ['어떤 쇼핑몰과 연동되고, 어떤 채널로 보내나요?',
+       '카페24 주문·고객 데이터와 자사몰 행동 로그를 연결해 사용하며, 초기에는 카페24 연동 앱 형태로 제공되어 별도 개발 없이 시작할 수 있습니다. 발송은 카카오 알림톡·브랜드 메시지(구 친구톡)와 문자(SMS·LMS) 등 주요 채널을 지원하며, 한 채널이 닿지 않으면 다른 채널로 대체 발송되도록 설계할 수 있습니다.'],
+      ['비용은 어떻게 되고, 도입은 어떻게 진행되나요?',
+       '도입 시 첫 한 달간 연동과 CRM 마케팅 운영을 무료로 직접 도와드립니다. 그 기간에 브랜드의 내부 데이터를 함께 분석해, 어디서 고객이 빠지고 무엇부터 풀어야 할지 잡아드립니다. 이후 메시지 발송 비용은 사용량 기준 종량제이며, 서비스 이용료는 별도로 안내드립니다. 사전등록 브랜드에는 추가 가격 혜택을 제공합니다.']
+    ];
+    this.items = QA.map(([q, a], i) => {
+      const item = document.createElement('div');
+      item.className = 'fqItem' + (i === 0 ? ' open' : '');
+      item.innerHTML = '<button class="fqQ"><span class="fqQt">' + q + '</span><span class="fqIco"></span></button>' +
+        '<div class="fqA"><p class="fqAt">' + a + '</p></div>';
+      item.querySelector('.fqQ').addEventListener('click', () => this.toggle(i));
+      this.list.appendChild(item);
+      return item;
+    });
+  }
+  toggle(i) {
+    const isOpen = this.items[i].classList.contains('open');
+    this.items.forEach(it => it.classList.remove('open'));
+    if (!isOpen) this.items[i].classList.add('open');
+  }
+  renderVals() {
+    return {
+      rootRef: (el) => { this.root = el; },
+      listRef: (el) => { this.list = el; }
+    };
+  }
+}
+</script>
+</body>
+</html>
