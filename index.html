@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  *{box-sizing:border-box}
+  html{color-scheme:light}
+  html,body{margin:0;padding:0;background:#F7F8F6}
+  body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  ::selection{background:#37B17933}
+  @keyframes axFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+  @keyframes axPulse{0%{box-shadow:0 0 0 0 var(--accent)}70%{box-shadow:0 0 0 6px rgba(55,177,121,0)}100%{box-shadow:0 0 0 0 rgba(55,177,121,0)}}
+  @keyframes axDraw{from{stroke-dashoffset:560}to{stroke-dashoffset:0}}
+  @keyframes axDot{0%{box-shadow:0 0 0 0 rgba(55,177,121,.5)}70%{box-shadow:0 0 0 7px rgba(55,177,121,0)}100%{box-shadow:0 0 0 0 rgba(55,177,121,0)}}
+  [data-anim]{animation-play-state:var(--play,running)}
+  @keyframes axMarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @keyframes axDrift0{0%,100%{transform:rotate(-5deg) translateY(0)}50%{transform:rotate(-5deg) translateY(-7px)}}
+  @keyframes axDrift1{0%,100%{transform:rotate(4deg) translateY(0)}50%{transform:rotate(4deg) translateY(-9px)}}
+  @keyframes axDrift2{0%,100%{transform:rotate(-2.5deg) translateY(0)}50%{transform:rotate(-2.5deg) translateY(-6px)}}
+  @keyframes axDrift3{0%,100%{transform:rotate(6deg) translateY(0)}50%{transform:rotate(6deg) translateY(-8px)}}
+  @keyframes axDrift4{0%,100%{transform:rotate(-6deg) translateY(0)}50%{transform:rotate(-6deg) translateY(-5px)}}
+  @media (prefers-reduced-motion: reduce){.axTmplCard{animation:none !important}}
+  @media (prefers-reduced-motion: reduce){[data-anim]{animation:none !important}.axSol *{transition-duration:.01ms !important}}
+  @media (max-width:980px){.axSolGrid{grid-template-columns:1fr !important;gap:48px !important}.axLoop{margin:0 auto !important}}
+  @media (max-width:980px){.axFeatGrid{grid-template-columns:1fr !important;gap:18px !important}.axFeatArrow{transform:rotate(90deg) !important;margin:2px auto !important}}
+  @media (max-width:820px){.axF2Grid{grid-template-columns:1fr !important;gap:16px !important}}
+  @media (max-width:880px){.axF3Grid{grid-template-columns:1fr !important;gap:30px !important}}
+  @media (max-width:560px){.axCtaCards{grid-template-columns:1fr !important}.axMobileCta{display:block !important}.axFooter{flex-direction:column;align-items:flex-start !important;gap:18px !important}}
+  .axCtaPrimary:hover{transform:translateY(-2px);box-shadow:0 24px 42px -14px rgba(26,86,50,.78)}
+  .axCtaPrimary:hover .axCtaArrow{transform:translateX(4px)}
+  .axCtaSecondary:hover{transform:translateY(-2px);border-color:rgba(20,40,30,.28);box-shadow:0 16px 30px -18px rgba(20,60,40,.34)}
+  @media (max-width:820px){.axTrustGrid{grid-template-columns:1fr !important;max-width:460px !important}}
+  @media (max-width:980px){
+    #axGrid{grid-template-columns:1fr !important;gap:54px !important}
+    .axDemoWrap{margin:0 auto !important}
+    #axHeadline{font-size:50px !important}
+  }
+  @media (max-width:600px){
+    #axHero{padding:96px 22px 64px !important}
+    #axHeadline{font-size:38px !important}
+    #axSub{font-size:16px !important}
+    .axNavLinks .axNavText{display:none !important}
+    .axDemoWrap{transform:scale(.84);transform-origin:top center}
+  }
+</style>
+</helmet>
+
+<div ref="{{ rootRef }}" style="--accent:#37B179;--deep:#1A5632;--hi:#16864F;--ink:#14201A;--ink2:#52645A;--muted:#5C6B62;--line:#E6ECE8;--bg:#F7F8F6;--play:running;background:var(--bg);min-height:100vh;font-family:'Pretendard',system-ui,sans-serif;color:var(--ink);position:relative;overflow:hidden">
+
+  <div style="position:absolute;top:-220px;right:-160px;width:680px;height:680px;border-radius:50%;background:radial-gradient(circle,rgba(55,177,121,.16),rgba(55,177,121,0) 68%);pointer-events:none"></div>
+  <div style="position:absolute;bottom:-260px;left:-200px;width:620px;height:620px;border-radius:50%;background:radial-gradient(circle,rgba(26,86,50,.08),rgba(26,86,50,0) 70%);pointer-events:none"></div>
+
+  <nav style="position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:18px clamp(22px,5vw,64px);background:rgba(247,248,246,.72);backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid rgba(20,40,30,.06)">
+    <a href="#" style="display:flex;align-items:center">
+      <img src="assets/axion-logo.png" alt="AXION" style="height:26px;width:auto;display:block" />
+    </a>
+    <div class="axNavLinks" style="display:flex;align-items:center;gap:10px">
+      <a href="#" class="axNavText" style="text-decoration:none;color:var(--ink);font-weight:600;font-size:14.5px;padding:10px 16px;border-radius:10px;white-space:nowrap">서비스 소개서</a>
+      <button onClick="{{ openSignup }}" style="text-decoration:none;color:#fff;background:var(--deep);font-weight:700;font-size:14.5px;padding:10px 20px;border:none;border-radius:11px;cursor:pointer;font-family:inherit;box-shadow:0 8px 18px -8px rgba(26,86,50,.6);white-space:nowrap">사전등록</button>
+    </div>
+  </nav>
+
+  <main id="axHero" style="position:relative;z-index:2;max-width:1240px;margin:0 auto;padding:148px clamp(22px,5vw,64px) 96px;overflow:hidden">
+    <div style="position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden">
+      <dc-import name="AXion 히어로 데모 V2" hint-size="100%,600px" style="position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);width:100%"></dc-import>
+    </div>
+    <div style="position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(247,248,246,.97) 0%,rgba(247,248,246,.82) 30%,rgba(247,248,246,.32) 52%,rgba(247,248,246,0) 72%)"></div>
+    <div id="axGrid" style="position:relative;z-index:2;display:grid;grid-template-columns:1fr;align-items:center">
+
+      <div style="max-width:560px">
+        <h1 id="axHeadline" style="font-size:62px;line-height:1.25;letter-spacing:-.02em;font-weight:700;word-break:keep-all;margin:0 0 26px">
+          떠나는 고객을 잡는 곳,<br />
+          <span style="position:relative;white-space:nowrap;color:var(--hi)">엑시온</span>
+        </h1>
+
+        <p id="axSub" style="font-size:17.5px;line-height:1.7;color:var(--ink2);font-weight:400;margin:0 0 34px;max-width:476px">
+          고객 분석부터 세그먼트·캠페인·발송까지,<br />CRM 자동화를 AXion에서 시작하세요.
+        </p>
+
+        <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:24px">
+          <button onClick="{{ openSignup }}" style="display:inline-flex;align-items:center;gap:9px;text-decoration:none;background:var(--deep);color:#fff;font-weight:700;font-size:16px;padding:16px 26px;border:none;border-radius:13px;cursor:pointer;font-family:inherit;box-shadow:0 16px 30px -14px rgba(26,86,50,.7)">사전등록하기 <span style="font-size:17px">→</span></button>
+          <button onClick="{{ openBrochure }}" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;background:#fff;color:var(--ink);font-weight:700;font-size:16px;padding:16px 24px;border:1px solid rgba(20,40,30,.14);border-radius:13px;cursor:pointer;font-family:inherit">서비스 소개서</button>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <section class="axTrust" style="position:relative;z-index:2;max-width:1240px;margin:0 auto;padding:24px clamp(22px,5vw,64px) 112px">
+    <div style="text-align:center;font-size:13px;font-weight:600;color:#9aa8a0;letter-spacing:.02em;margin-bottom:32px">AXion과 함께하는 브랜드</div>
+
+    <div style="position:relative;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 11%,#000 89%,transparent);mask-image:linear-gradient(90deg,transparent,#000 11%,#000 89%,transparent);margin-bottom:44px">
+      <div style="display:flex;align-items:center;gap:60px;width:max-content;animation:axMarquee 30s linear infinite" data-anim>
+        <img src="assets/logos/bttr.png" alt="bttr" style="height:30px;width:auto;flex:none;opacity:.92" />
+        <img src="assets/logos/bgroom.png" alt="B.GROOM" style="height:19px;width:auto;flex:none;opacity:.92" />
+        <img src="assets/logos/sixkiri.png" alt="SIXKIRI" style="height:30px;width:auto;flex:none;opacity:.92" />
+        <img src="assets/logos/sooksung.png" alt="SOOKSUNG" style="height:16px;width:auto;flex:none;opacity:.92" />
+        <img src="assets/logos/bttr.png" alt="bttr" style="height:30px;width:auto;flex:none;opacity:.92" />
+        <img src="assets/logos/bgroom.png" alt="B.GROOM" style="height:19px;width:auto;flex:none;opacity:.92" />
+        <img src="assets/logos/sixkiri.png" alt="SIXKIRI" style="height:30px;width:auto;flex:none;opacity:.92" />
+        <img src="assets/logos/sooksung.png" alt="SOOKSUNG" style="height:16px;width:auto;flex:none;opacity:.92" />
+      </div>
+    </div>
+
+    <div class="axTrustGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:920px;margin:0 auto">
+
+      <div style="background:#fff;border:1px solid rgba(20,40,30,.08);border-radius:14px;padding:22px 22px;box-shadow:0 10px 26px -18px rgba(20,60,40,.2)">
+        <p style="font-size:15px;line-height:1.62;color:var(--ink);font-weight:600;margin:0 0 16px;word-break:keep-all">데이터로 고객을 자동 분류하고 캠페인까지 잇는 접근이 인상적입니다.</p>
+        <div style="font-size:13px;font-weight:800;color:var(--ink)">문○○ 교수 <span style="font-weight:600;color:var(--muted)">· 고려대 정보통신 · 자문</span></div>
+      </div>
+
+      <div style="background:#fff;border:1px solid rgba(20,40,30,.08);border-radius:14px;padding:22px 22px;box-shadow:0 10px 26px -18px rgba(20,60,40,.2)">
+        <p style="font-size:15px;line-height:1.62;color:var(--ink);font-weight:600;margin:0 0 16px;word-break:keep-all">사람이 매일 붙잡던 CRM을 자동 추천 + 검수로 안전하게 풀어낸 점이 인상적입니다.</p>
+        <div style="font-size:13px;font-weight:800;color:var(--ink)">N○○○○ 심사역 <span style="font-weight:600;color:var(--muted)">· 액셀러레이터</span></div>
+      </div>
+
+      <div style="background:#fff;border:1px solid rgba(20,40,30,.08);border-radius:14px;padding:22px 22px;box-shadow:0 10px 26px -18px rgba(20,60,40,.2)">
+        <p style="font-size:15px;line-height:1.62;color:var(--ink);font-weight:600;margin:0 0 16px;word-break:keep-all">반복되던 세그먼트·발송을 AXion이 대신해줘 마케팅 자동화에 큰 도움이 됐어요.</p>
+        <div style="font-size:13px;font-weight:800;color:var(--ink)">이○○ 대표 <span style="font-weight:600;color:var(--muted)">· D2C 브랜드</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <div style="position:relative;z-index:2;background:linear-gradient(180deg,#F7F8F6 0%,#EAF3ED 9%,#EFF6F1 46%,#F7FBF8 80%,#FFFFFF 100%);overflow:hidden">
+    <div style="position:absolute;top:80px;left:-180px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(55,177,121,.09),rgba(55,177,121,0) 70%);pointer-events:none;z-index:0"></div>
+    <div style="position:absolute;top:420px;right:-160px;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(26,86,50,.06),rgba(26,86,50,0) 72%);pointer-events:none;z-index:0"></div>
+
+  <section class="axSol axBandSec" style="position:relative;z-index:2;max-width:1240px;margin:0 auto;padding:clamp(36px,5vw,60px) clamp(22px,5vw,64px)">
+    <div style="text-align:center;margin-bottom:44px">
+      <h2 style="font-size:clamp(27px,3.3vw,40px);line-height:1.28;letter-spacing:-.02em;font-weight:700;word-break:keep-all;margin:0 0 14px;color:var(--ink)">복잡한 CRM 운영,<br />검수 한 번으로 완료합니다</h2>
+      <p style="font-size:clamp(12.5px,1.7vw,16.5px);line-height:1.65;color:var(--ink2);font-weight:400;margin:0 auto;max-width:none;white-space:nowrap;word-break:keep-all">AXion의 자동 루프 시스템, CRM의 선순환을 만듭니다.</p>
+    </div>
+
+    <div style="position:relative;width:100%">
+      <dc-import name="AXion 저니 데모" embedded="{{ true }}" hint-size="100%,480px"></dc-import>
+    </div>
+  </section>
+
+  <section class="axFeat axBandSec" style="position:relative;z-index:2;max-width:1240px;margin:0 auto;padding:clamp(36px,5vw,60px) clamp(22px,5vw,64px)">
+    <div style="text-align:center;margin-bottom:44px">
+      <h2 style="font-size:clamp(27px,3.3vw,40px);line-height:1.28;letter-spacing:-.02em;font-weight:700;word-break:keep-all;margin:0 0 14px;color:var(--ink)">떠날 고객, 보이세요?</h2>
+      <p style="font-size:clamp(12.5px,1.7vw,16.5px);line-height:1.65;color:var(--ink2);font-weight:400;margin:0 auto;max-width:600px;word-break:keep-all">AXion은 고객의 행동 로그와 구매 로그 분석을 통해, 지금 붙잡아야 할 고객을 짚어냅니다.</p>
+    </div>
+
+    <div style="max-width:1000px;margin:0 auto">
+      <dc-import name="AXion 세그먼트 데모" embedded="{{ true }}" hint-size="100%,500px"></dc-import>
+    </div>
+  </section>
+
+  <section class="axFeat2 axBandSec" style="position:relative;z-index:2;max-width:1240px;margin:0 auto;padding:clamp(36px,5vw,60px) clamp(22px,5vw,64px)">
+    <div style="text-align:center;margin-bottom:44px">
+      <h2 style="font-size:clamp(27px,3.3vw,40px);line-height:1.28;letter-spacing:-.02em;font-weight:700;word-break:keep-all;margin:0 0 14px;color:var(--ink)">템플릿은, 브랜드를 모릅니다</h2>
+      <p style="font-size:16.5px;line-height:1.65;color:var(--ink2);font-weight:400;margin:0 auto;max-width:600px;word-break:keep-all">좋은 메시지는 많지만, 브랜드다운 메시지는 드뭅니다. AXion은 고객 맥락과 브랜드 데이터를 학습해, 브랜드만의 캠페인을 만듭니다.</p>
+    </div>
+
+    <div style="max-width:1040px;margin:0 auto">
+      <dc-import name="AXion 메시지 비교" embedded="{{ true }}" hint-size="100%,464px"></dc-import>
+    </div>
+  </section>
+
+  <section class="axFeat3 axBandSec" style="position:relative;z-index:2;max-width:1240px;margin:0 auto;padding:clamp(36px,5vw,60px) clamp(22px,5vw,64px)">
+    <div style="text-align:center;margin-bottom:44px">
+      <h2 style="font-size:clamp(27px,3.3vw,40px);line-height:1.28;letter-spacing:-.02em;font-weight:700;word-break:keep-all;margin:0 0 8px;color:var(--ink)">캠페인이 쌓여 자산이 됩니다</h2>
+      <p style="font-size:clamp(12.5px,1.7vw,16.5px);line-height:1.65;color:var(--ink2);font-weight:400;margin:0 auto;max-width:none;white-space:nowrap;text-align:center;word-break:keep-all">AXion은 모든 발송의 성과를 학습해, 다음 타겟과 메시지를 더 정확하게 만듭니다.</p>
+    </div>
+
+    <div class="axF3Grid" style="display:flex;justify-content:center;max-width:1040px;margin:0 auto">
+      <div style="position:relative;width:100%">
+        <dc-import name="AXion 그로스루프 데모" embedded="{{ true }}" hint-size="100%,470px"></dc-import>
+      </div>
+    </div>
+  </section>
+  </div>
+
+  <section class="axFaq" style="position:relative;z-index:2;background:#fff;max-width:1240px;margin:0 auto;padding:clamp(56px,7vw,104px) clamp(22px,5vw,64px) clamp(40px,5vw,64px)">
+    <dc-import name="AXion FAQ" embedded="{{ true }}" hint-size="100%,620px"></dc-import>
+  </section>
+
+  <section class="axCta" id="axCta" style="position:relative;z-index:2;padding:clamp(40px,5vw,72px) clamp(22px,5vw,64px) 96px">
+    <div style="position:relative;max-width:1080px;margin:0 auto;overflow:hidden;border-radius:30px;background:linear-gradient(160deg,#EAF6EE 0%,#F2FAF5 48%,#E6F4EC 100%);border:1px solid rgba(26,86,50,.12);padding:clamp(56px,6.5vw,96px) clamp(28px,5vw,72px);text-align:center">
+      <div style="position:absolute;top:-120px;right:-80px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(55,177,121,.22),rgba(55,177,121,0) 70%);pointer-events:none"></div>
+      <div style="position:absolute;bottom:-150px;left:-90px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(26,86,50,.1),rgba(26,86,50,0) 70%);pointer-events:none"></div>
+
+      <div style="position:relative">
+        <h2 style="font-size:clamp(28px,3.6vw,44px);line-height:1.24;letter-spacing:-.025em;font-weight:700;word-break:keep-all;margin:0 0 16px;color:var(--ink)">복잡한 CRM,<br />이제 검수 한 번으로.</h2>
+        <p style="font-size:clamp(15px,1.6vw,17.5px);line-height:1.62;color:#46564e;font-weight:400;margin:0 auto 36px;max-width:540px;word-break:keep-all">떠나는 고객을 잡는 일, AXion이 분석부터 발송까지 대신합니다.</p>
+
+        <div class="axCtaCards" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:680px;margin:0 auto 32px;text-align:left">
+          <div style="background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px 24px;box-shadow:0 1px 2px rgba(15,32,24,.04),0 16px 34px -22px rgba(20,60,40,.34)">
+            <div style="font-size:16px;font-weight:700;color:var(--ink);letter-spacing:-.01em;line-height:1.4;word-break:keep-all;margin-bottom:9px">첫 달, <b style="color:var(--hi);font-weight:800">도입부터 실행까지 함께합니다</b></div>
+            <div style="font-size:13px;color:var(--ink2);font-weight:500;line-height:1.6;word-break:keep-all">연동부터 CRM 데이터 분석·세그먼트·캠페인 운영까지, 첫 달은 저희가 직접 도와드립니다.</div>
+          </div>
+          <div style="background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px 24px;box-shadow:0 1px 2px rgba(15,32,24,.04),0 16px 34px -22px rgba(20,60,40,.34)">
+            <div style="font-size:16px;font-weight:700;color:var(--ink);letter-spacing:-.01em;line-height:1.4;word-break:keep-all;margin-bottom:9px">사전등록 시 <b style="color:var(--hi);font-weight:800">3개월 50% 할인</b></div>
+            <div style="font-size:13px;color:var(--ink2);font-weight:500;line-height:1.6;word-break:keep-all">도입 후 3개월간 이용료를 절반으로 제공합니다.</div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center">
+          <button onClick="{{ openSignup }}" class="axCtaPrimary" style="display:inline-flex;align-items:center;gap:10px;background:var(--deep);color:#fff;font-weight:700;font-size:17px;padding:18px 38px;border:none;border-radius:14px;cursor:pointer;font-family:inherit;box-shadow:0 18px 34px -14px rgba(26,86,50,.7);transition:transform .18s ease,box-shadow .18s ease">사전등록하기 <span class="axCtaArrow" style="font-size:18px;transition:transform .18s ease">→</span></button>
+          <button onClick="{{ openBrochure }}" class="axCtaSecondary" style="display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--ink);font-weight:700;font-size:17px;padding:18px 30px;border:1px solid rgba(20,40,30,.16);border-radius:14px;cursor:pointer;font-family:inherit;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease">서비스 소개서</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer style="position:relative;z-index:2;border-top:1px solid rgba(20,40,30,.08);background:#fff">
+    <div class="axFooter" style="max-width:1240px;margin:0 auto;padding:36px clamp(22px,5vw,64px);display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:9px">
+          <img src="assets/axion-logo.png" alt="AXION" style="height:24px;width:auto;display:block" />
+        </div>
+        <span style="font-size:13px;color:var(--muted);font-weight:500;word-break:keep-all">세그먼트부터 발송까지, 검수 한 번이면 되는 CRM 에이전트</span>
+        <div style="font-size:12px;color:#9aa8a0;font-weight:500;line-height:1.65;margin-top:4px;word-break:keep-all">
+          (주) 엑시온웍스 &nbsp;|&nbsp; 대표: 허준호 &nbsp;|&nbsp; 사업자 등록번호: 802-88-03978<br />
+          서울특별시 서대문구 연세로2나길 61
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+        <span style="font-size:12.5px;color:#9aa8a0;font-weight:500">Copyright © 2026 AXION, All rights reserved.</span>
+        <a href="#" style="font-size:12.5px;color:var(--muted);font-weight:600;text-decoration:none;white-space:nowrap">개인정보처리방침</a>
+      </div>
+    </div>
+    <div style="height:74px"></div>
+  </footer>
+
+  <!-- 모바일 하단 고정 CTA -->
+  <div class="axMobileCta" style="position:fixed;left:0;right:0;bottom:0;z-index:60;display:none;padding:12px 18px calc(12px + env(safe-area-inset-bottom));background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-top:1px solid rgba(20,40,30,.08)">
+    <button onClick="{{ openSignup }}" style="width:100%;display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--deep);color:#fff;font-weight:700;font-size:16px;padding:15px;border:none;border-radius:13px;cursor:pointer;font-family:inherit;box-shadow:0 12px 24px -12px rgba(26,86,50,.7)">사전등록하기 <span style="font-size:17px">→</span></button>
+  </div>
+
+  <!-- 모달 -->
+  <div onClick="{{ closeModal }}" style="{{ modalOverlay }}">
+    <div onClick="{{ stopProp }}" style="{{ modalCard }}">
+      <button onClick="{{ closeModal }}" aria-label="닫기" style="position:absolute;top:18px;right:18px;z-index:3;width:30px;height:30px;border-radius:9px;border:none;background:rgba(15,32,24,.06);display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:rgba(15,32,24,.12)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="#52645A" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+
+      <!-- 사전등록 폼 -->
+      <sc-if value="{{ signupFormShown }}" hint-placeholder-val="{{ false }}">
+        <form onSubmit="{{ submitSignup }}">
+          <div style="padding:26px 26px 20px;background:linear-gradient(160deg,#F4FAF6,#EAF3ED);border-bottom:1px solid var(--line)">
+            <div style="font-size:20px;font-weight:800;letter-spacing:-.03em;color:var(--ink);padding-right:36px;line-height:1.35;word-break:keep-all">사전등록과 함께,<br />CRM 상담을 받아보세요</div>
+          </div>
+          <div style="padding:22px 26px 26px">
+            <div style="margin-bottom:14px">
+              <label style="display:block;font-size:12.5px;font-weight:700;color:var(--ink);margin-bottom:6px">성함</label>
+              <input type="text" placeholder="예: 박서연" required="required" style="width:100%;font-family:inherit;font-size:14px;color:var(--ink);padding:12px 13px;border:1px solid #E6ECE8;border-radius:10px;background:#F6F9F7;outline:none;transition:.15s" style-focus="border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(55,177,121,.15)" />
+            </div>
+            <div style="margin-bottom:14px">
+              <label style="display:block;font-size:12.5px;font-weight:700;color:var(--ink);margin-bottom:6px">브랜드명</label>
+              <input type="text" placeholder="예: 무무샵" required="required" style="width:100%;font-family:inherit;font-size:14px;color:var(--ink);padding:12px 13px;border:1px solid #E6ECE8;border-radius:10px;background:#F6F9F7;outline:none;transition:.15s" style-focus="border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(55,177,121,.15)" />
+            </div>
+            <div style="margin-bottom:14px">
+              <label style="display:block;font-size:12.5px;font-weight:700;color:var(--ink);margin-bottom:6px">자사몰 주소 <span style="color:var(--muted);font-weight:600">(선택)</span></label>
+              <input type="text" placeholder="yourshop.cafe24.com" style="width:100%;font-family:inherit;font-size:14px;color:var(--ink);padding:12px 13px;border:1px solid #E6ECE8;border-radius:10px;background:#F6F9F7;outline:none;transition:.15s" style-focus="border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(55,177,177,.15)" />
+            </div>
+            <div style="margin-bottom:14px">
+              <label style="display:block;font-size:12.5px;font-weight:700;color:var(--ink);margin-bottom:6px">이메일</label>
+              <input type="email" placeholder="you@brand.com" required="required" style="width:100%;font-family:inherit;font-size:14px;color:var(--ink);padding:12px 13px;border:1px solid #E6ECE8;border-radius:10px;background:#F6F9F7;outline:none;transition:.15s" style-focus="border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(55,177,121,.15)" />
+            </div>
+            <div style="margin-bottom:18px">
+              <label style="display:block;font-size:12.5px;font-weight:700;color:var(--ink);margin-bottom:6px">연락처</label>
+              <input type="tel" placeholder="010-0000-0000" required="required" style="width:100%;font-family:inherit;font-size:14px;color:var(--ink);padding:12px 13px;border:1px solid #E6ECE8;border-radius:10px;background:#F6F9F7;outline:none;transition:.15s" style-focus="border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(55,177,121,.15)" />
+            </div>
+            <button type="submit" style="width:100%;background:var(--deep);color:#fff;font-weight:800;font-size:15.5px;padding:15px;border:none;border-radius:12px;cursor:pointer;font-family:inherit;box-shadow:0 16px 32px -14px rgba(26,86,50,.5);transition:transform .15s,box-shadow .15s" style-hover="transform:translateY(-1px);box-shadow:0 20px 40px -16px rgba(26,86,50,.55)">사전등록 신청하기</button>
+            <div style="font-size:11.5px;color:#9aa8a0;font-weight:500;text-align:center;margin-top:13px">제출 시 개인정보처리방침에 동의하는 것으로 간주합니다.</div>
+          </div>
+        </form>
+      </sc-if>
+
+      <!-- 사전등록 완료 -->
+      <sc-if value="{{ signupDone }}" hint-placeholder-val="{{ false }}">
+        <div style="text-align:center;padding:38px 30px 30px">
+          <div style="width:58px;height:58px;border-radius:50%;background:#EAF6EE;display:flex;align-items:center;justify-content:center;margin:0 auto 18px"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.2 4.2L19 6.5" stroke="var(--hi)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div style="font-size:21px;font-weight:800;color:var(--ink);letter-spacing:-.02em">사전등록이 완료됐어요</div>
+          <div style="font-size:14px;color:var(--muted);font-weight:500;line-height:1.6;margin-top:10px">오픈 시 입력하신 이메일로<br />가장 먼저 안내드릴게요.</div>
+          <button onClick="{{ closeModal }}" style="margin-top:22px;background:#fff;color:var(--ink);font-weight:700;font-size:14.5px;padding:13px 26px;border:1px solid rgba(20,40,30,.14);border-radius:12px;cursor:pointer;font-family:inherit">닫기</button>
+        </div>
+      </sc-if>
+
+      <!-- 서비스 소개서 게이트 -->
+      <sc-if value="{{ isBrochure }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:30px">
+          <div style="display:inline-flex;align-items:center;gap:7px;background:#F1F5F2;border:1px solid #E6ECE8;border-radius:999px;padding:5px 12px;margin-bottom:16px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 3h9l5 5v13H6z" stroke="var(--deep)" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3v6h6" stroke="var(--deep)" stroke-width="1.8" stroke-linejoin="round"/></svg><span style="font-size:11.5px;font-weight:700;color:var(--deep)">서비스 소개서</span></div>
+          <div style="font-size:21px;font-weight:800;color:var(--ink);letter-spacing:-.02em">소개서를 보내드릴게요</div>
+          <div style="font-size:13.5px;color:var(--muted);font-weight:500;margin-top:7px;margin-bottom:22px">아래 정보를 남기시면 소개서 뷰어로 바로 연결됩니다.</div>
+          <div style="display:flex;flex-direction:column;gap:11px">
+            <input type="text" placeholder="성함" style="width:100%;font-family:inherit;font-size:14px;color:var(--ink);padding:13px 15px;border:1px solid #E6ECE8;border-radius:11px;background:#FBFCFB;outline:none" />
+            <input type="email" placeholder="업무 이메일" style="width:100%;font-family:inherit;font-size:14px;color:var(--ink);padding:13px 15px;border:1px solid #E6ECE8;border-radius:11px;background:#FBFCFB;outline:none" />
+            <input type="text" placeholder="기업명" style="width:100%;font-family:inherit;font-size:14px;color:var(--ink);padding:13px 15px;border:1px solid #E6ECE8;border-radius:11px;background:#FBFCFB;outline:none" />
+          </div>
+          <button style="width:100%;margin-top:18px;background:var(--deep);color:#fff;font-weight:700;font-size:15.5px;padding:15px;border:none;border-radius:12px;cursor:pointer;font-family:inherit;box-shadow:0 14px 28px -14px rgba(26,86,50,.7)">소개서 보기</button>
+          <div style="margin-top:16px;display:flex;gap:8px">
+            <div style="flex:1;aspect-ratio:3/4;border-radius:9px;background:repeating-linear-gradient(135deg,#F1F5F2,#F1F5F2 7px,#EAEFEB 7px,#EAEFEB 14px);border:1px solid #E6ECE8;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px"><span style="font-family:ui-monospace,monospace;font-size:9px;color:#aab2ac">p.1</span></div>
+            <div style="flex:1;aspect-ratio:3/4;border-radius:9px;background:repeating-linear-gradient(135deg,#F1F5F2,#F1F5F2 7px,#EAEFEB 7px,#EAEFEB 14px);border:1px solid #E6ECE8;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px"><span style="font-family:ui-monospace,monospace;font-size:9px;color:#aab2ac">p.2</span></div>
+            <div style="flex:1;aspect-ratio:3/4;border-radius:9px;background:repeating-linear-gradient(135deg,#F1F5F2,#F1F5F2 7px,#EAEFEB 7px,#EAEFEB 14px);border:1px solid #E6ECE8;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px"><span style="font-family:ui-monospace,monospace;font-size:9px;color:#aab2ac">p.3</span></div>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:880},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#a9dac3&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#37B179&quot;,&quot;#2FA36B&quot;,&quot;#1A5632&quot;,&quot;#2A6FDB&quot;]},&quot;bgTone&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;#F7F8F6&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#F7F8F6&quot;,&quot;#F2F6F3&quot;,&quot;#FFFFFF&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  state = { step: 0, solTab: 'approval', cardStatus: ['pending','pending','pending'], drawer: null, featTab: 'behavior', adopted: [false,false,false,false], modal: null, signupDone: false, faqOpen: 0 };
+  timeline = [
+    { tab: 0, mode: 'idle',    dur: 1500 },
+    { tab: 0, mode: 'approve', dur: 1150 },
+    { tab: 0, mode: 'sent',    dur: 1600 },
+    { tab: 1, mode: 'detail',  dur: 3200 },
+    { tab: 2, mode: 'perf',    dur: 3600 },
+  ];
+  cardData = [
+    { time: '10분 전', title: '장바구니 미구매 리마인드', copy: '최근 7일 장바구니에 담고 구매하지 않은 고객 1,240명이에요. 지금 보내면 전환 기대가 가장 높아요.', n: '1,240명', cost: '12,400원', cvr: '3.2%', seg: '1,240명', conds: ['최근 7일 장바구니 담음','미구매','신규 제외'], msg: '고객님, 장바구니에 담아두신 상품이 기다리고 있어요. 지금 구매하시면 첫 구매 10% 할인을 드려요.' },
+    { time: '32분 전', title: '30일 미구매 단골 재구매 쿠폰', copy: '재구매 주기(28일)를 넘긴 단골이 980명이에요. 이탈하기 전에 쿠폰으로 다시 불러올 타이밍이에요.', n: '980명', cost: '9,800원', cvr: '4.1%', seg: '980명', conds: ['최근 구매 30일 경과','누적 3회 이상 구매','휴면 제외'], msg: '단골 고객님께만 드리는 재구매 쿠폰이 도착했어요. 다시 만나요!' },
+    { time: '1시간 전', title: '휴면 직전 고객 웰컴백', copy: '마지막 구매 후 55일 경과해 이탈이 임박한 고객 540명이에요. 웰컴백 혜택으로 되살릴 수 있어요.', n: '540명', cost: '5,400원', cvr: '2.4%', seg: '540명', conds: ['마지막 구매 55일 경과','이탈 위험 높음','수신 동의'], msg: '오랜만이에요! 다시 찾아주시면 웰컴백 혜택을 준비해 둘게요.' }
+  ];
+  componentDidMount() { this.tick(); this._onKey = (e) => { if (e.key === 'Escape' && this.state.modal) this.closeModal(); }; document.addEventListener('keydown', this._onKey); }
+  componentWillUnmount() { clearTimeout(this._t); if (this._onKey) document.removeEventListener('keydown', this._onKey); document.body.style.overflow = ''; }
+  tick() {
+    clearTimeout(this._t);
+    if (this.props && this.props.motion === false) return;
+    const cur = this.timeline[this.state.step];
+    this._t = setTimeout(() => {
+      this.setState(s => ({ step: (s.step + 1) % this.timeline.length }), () => this.tick());
+    }, cur.dur);
+  }
+  go(tab) {
+    const idx = this.timeline.findIndex(t => t.tab === tab);
+    this.setState({ step: idx < 0 ? 0 : idx }, () => this.tick());
+  }
+  componentDidUpdate() { this.applyTweaks(); document.body.style.overflow = this.state.modal ? 'hidden' : ''; }
+  applyTweaks() {
+    if (!this.root) return;
+    const p = this.props || {};
+    if (p.accent) this.root.style.setProperty('--accent', p.accent);
+    if (p.bgTone) { this.root.style.setProperty('--bg', p.bgTone); this.root.style.background = p.bgTone; }
+    this.root.style.setProperty('--play', p.motion === false ? 'paused' : 'running');
+  }
+  tabCss(active) {
+    return {
+      display: 'inline-flex', alignItems: 'center', gap: '6px',
+      padding: '11px 0', marginRight: '18px',
+      background: 'none', border: 'none',
+      borderBottom: active ? '2px solid var(--deep)' : '2px solid transparent',
+      color: active ? '#15211A' : '#8a948d',
+      fontWeight: active ? 700 : 600, fontSize: '13px',
+      cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap',
+      transition: 'color .2s ease'
+    };
+  }
+  screenCss(n, tab) {
+    const on = tab === n;
+    return {
+      position: 'absolute', inset: '0',
+      opacity: on ? 1 : 0,
+      transform: on ? 'translateY(0)' : 'translateY(10px)',
+      pointerEvents: on ? 'auto' : 'none',
+      transition: 'opacity .45s ease, transform .45s ease'
+    };
+  }
+  setSolTab(t) { this.setState({ solTab: t }); }
+  approve(i) { this.setState(s => { const c = [...s.cardStatus]; c[i] = 'approved'; return { cardStatus: c, drawer: s.drawer === i ? null : s.drawer }; }); }
+  reject(i) { this.setState(s => { const c = [...s.cardStatus]; c[i] = 'rejected'; return { cardStatus: c, drawer: s.drawer === i ? null : s.drawer }; }); }
+  openDrawer(i) { this.setState({ drawer: i }); }
+  closeDrawer() { this.setState({ drawer: null }); }
+  solutionVals() {
+    const st = this.state;
+    const tabApproval = st.solTab === 'approval';
+    const pending = st.cardStatus.filter(s => s === 'pending').length;
+    const cards = this.cardData.map((d, i) => {
+      const status = st.cardStatus[i];
+      return {
+        time: d.time, title: d.title, copy: d.copy, n: d.n, cost: d.cost, cvr: d.cvr,
+        isPending: status === 'pending', isApproved: status === 'approved', isRejected: status === 'rejected',
+        onApprove: () => this.approve(i), onReject: () => this.reject(i), onDetail: () => this.openDrawer(i)
+      };
+    });
+    const scr = (on) => ({ position: 'absolute', inset: 0, opacity: on ? 1 : 0, transform: on ? 'translateY(0)' : 'translateY(8px)', pointerEvents: on ? 'auto' : 'none', transition: 'opacity .4s ease, transform .4s ease' });
+    const dc = st.drawer != null ? this.cardData[st.drawer] : {};
+    const open = st.drawer != null;
+    return {
+      cards, pendingCount: pending,
+      setSolApproval: () => this.setSolTab('approval'),
+      setSolPerf: () => this.setSolTab('perf'),
+      solTabApprovalStyle: this.tabCss(tabApproval),
+      solTabPerfStyle: this.tabCss(!tabApproval),
+      solApprovalScreen: scr(tabApproval),
+      solPerfScreen: scr(!tabApproval),
+      drawerTitle: dc.title || '', drawerSeg: dc.seg || '', drawerMsg: dc.msg || '', drawerConds: dc.conds || [],
+      closeDrawer: () => this.closeDrawer(),
+      drawerBackdrop: { position: 'absolute', inset: 0, background: 'rgba(20,40,30,.28)', opacity: open ? 1 : 0, pointerEvents: open ? 'auto' : 'none', transition: 'opacity .35s ease', zIndex: 6, cursor: 'pointer' },
+      drawerPanel: { position: 'absolute', top: 0, right: 0, bottom: 0, width: '300px', maxWidth: '82%', background: '#fff', borderLeft: '1px solid #E6ECE8', boxShadow: '-24px 0 48px -28px rgba(20,60,40,.32)', transform: open ? 'translateX(0)' : 'translateX(102%)', transition: 'transform .42s cubic-bezier(.22,1,.36,1)', zIndex: 7, display: 'flex', flexDirection: 'column' }
+    };
+  }
+  setFeatTab(t) { this.setState({ featTab: t }); }
+  adopt(i) { this.setState(s => { const a = [...s.adopted]; a[i] = !a[i]; return { adopted: a }; }); }
+  featVals() {
+    const st = this.state;
+    const isBehavior = st.featTab === 'behavior';
+    const adoptedCount = st.adopted.filter(Boolean).length;
+    const tabCss = (active) => ({
+      display: 'inline-flex', alignItems: 'center', gap: '6px',
+      padding: '8px 14px', borderRadius: '10px', cursor: 'pointer',
+      background: active ? '#fff' : 'transparent',
+      border: active ? '1px solid #E6ECE8' : '1px solid transparent',
+      boxShadow: active ? '0 4px 12px -8px rgba(20,40,30,.2)' : 'none',
+      color: active ? '#15211A' : '#8a948d', fontWeight: 700, fontSize: '13px',
+      fontFamily: 'inherit', whiteSpace: 'nowrap', transition: 'all .25s ease'
+    });
+    const panel = (on) => ({ opacity: on ? 1 : 0, transform: on ? 'translateY(0)' : 'translateY(6px)', pointerEvents: on ? 'auto' : 'none', transition: 'opacity .35s ease, transform .35s ease' });
+    const adoptBtn = (on) => ({
+      display: 'inline-flex', alignItems: 'center', gap: '5px',
+      padding: '8px 14px', borderRadius: '9px', cursor: 'pointer', fontFamily: 'inherit',
+      fontSize: '12.5px', fontWeight: 700, whiteSpace: 'nowrap',
+      background: on ? '#EAF6EE' : 'var(--deep)', color: on ? 'var(--hi)' : '#fff',
+      border: on ? '1px solid rgba(26,86,50,.2)' : '1px solid var(--deep)',
+      boxShadow: on ? 'none' : '0 8px 16px -10px rgba(26,86,50,.6)',
+      transition: 'all .25s ease'
+    });
+    return {
+      featBehaviorTab: tabCss(isBehavior), featOrderTab: tabCss(!isBehavior),
+      setFeatBehavior: () => this.setFeatTab('behavior'), setFeatOrder: () => this.setFeatTab('order'),
+      featBehaviorPanel: panel(isBehavior), featOrderPanel: panel(!isBehavior),
+      adoptedCount,
+      adopt0: () => this.adopt(0), adopt1: () => this.adopt(1), adopt2: () => this.adopt(2), adopt3: () => this.adopt(3),
+      adopt0On: st.adopted[0], adopt1On: st.adopted[1], adopt2On: st.adopted[2], adopt3On: st.adopted[3],
+      adoptBtn0: adoptBtn(st.adopted[0]), adoptBtn1: adoptBtn(st.adopted[1]), adoptBtn2: adoptBtn(st.adopted[2]), adoptBtn3: adoptBtn(st.adopted[3]),
+      adopt0Label: st.adopted[0] ? '✓ 채택됨' : '＋ 채택',
+      adopt1Label: st.adopted[1] ? '✓ 채택됨' : '＋ 채택',
+      adopt2Label: st.adopted[2] ? '✓ 채택됨' : '＋ 채택',
+      adopt3Label: st.adopted[3] ? '✓ 채택됨' : '＋ 채택'
+    };
+  }
+  openModal(which) { this.setState({ modal: which, signupDone: false }); }
+  closeModal() { this.setState({ modal: null, signupDone: false }); }
+  submitSignup(e) { if (e && e.preventDefault) e.preventDefault(); this.setState({ signupDone: true }); }
+  modalVals() {
+    const m = this.state.modal;
+    const open = !!m;
+    return {
+      openSignup: () => this.openModal('signup'),
+      openBrochure: () => this.openModal('brochure'),
+      closeModal: () => this.closeModal(),
+      stopProp: (e) => { if (e && e.stopPropagation) e.stopPropagation(); },
+      submitSignup: (e) => this.submitSignup(e),
+      modalOverlay: {
+        position: 'fixed', inset: 0, zIndex: open ? 200 : -1,
+        display: open ? 'flex' : 'none', alignItems: 'center', justifyContent: 'center', padding: '24px',
+        background: 'rgba(15,32,24,.45)', backdropFilter: 'blur(3px)',
+        opacity: 1, pointerEvents: open ? 'auto' : 'none'
+      },
+      modalCard: {
+        position: 'relative', width: '440px', maxWidth: '100%',
+        background: '#fff', borderRadius: '20px', padding: '0', overflow: 'hidden',
+        boxShadow: '0 50px 110px -40px rgba(15,32,24,.6)'
+      },
+      isSignup: m === 'signup',
+      isBrochure: m === 'brochure',
+      signupDone: this.state.signupDone,
+      signupFormShown: m === 'signup' && !this.state.signupDone
+    };
+  }
+  renderVals() {
+    const cur = this.timeline[this.state.step];
+    const tab = cur.tab, mode = cur.mode;
+    return {
+      rootRef: (el) => { this.root = el; this.applyTweaks(); },
+      ...this.solutionVals(),
+      ...this.featVals(),
+      ...this.modalVals(),
+      goApproval: () => this.go(0),
+      goDetail: () => this.go(1),
+      goPerf: () => this.go(2),
+      tabStyle0: this.tabCss(tab === 0),
+      tabStyle1: this.tabCss(tab === 1),
+      tabStyle2: this.tabCss(tab === 2),
+      screen0: this.screenCss(0, tab),
+      screen1: this.screenCss(1, tab),
+      screen2: this.screenCss(2, tab),
+      approveBtnStyle: {
+        flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '7px',
+        background: 'var(--deep)', color: '#fff', border: 'none',
+        fontWeight: 700, fontSize: '13.5px', padding: '11px', borderRadius: '10px',
+        cursor: 'pointer', fontFamily: 'inherit',
+        transform: mode === 'approve' ? 'scale(.96)' : 'scale(1)',
+        boxShadow: mode === 'approve'
+          ? '0 0 0 4px rgba(55,177,121,.28)'
+          : '0 8px 16px -10px rgba(26,86,50,.7)',
+        transition: 'transform .2s ease, box-shadow .2s ease'
+      },
+      cursorStyle: {
+        position: 'absolute', left: '86px', top: '4px',
+        filter: 'drop-shadow(0 4px 6px rgba(0,0,0,.22))',
+        pointerEvents: 'none', zIndex: 3,
+        opacity: mode === 'approve' ? 1 : 0,
+        transform: mode === 'approve' ? 'translate(0,2px) scale(.92)' : 'translate(18px,16px) scale(1)',
+        transition: 'opacity .35s ease, transform .35s ease'
+      },
+      sentStyle: {
+        position: 'absolute', inset: '0',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '7px', textAlign: 'center',
+        background: 'rgba(255,255,255,.95)', backdropFilter: 'blur(2px)',
+        borderRadius: '14px',
+        opacity: mode === 'sent' ? 1 : 0,
+        transform: mode === 'sent' ? 'scale(1)' : 'scale(.96)',
+        pointerEvents: 'none',
+        transition: 'opacity .4s ease, transform .4s ease'
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>
