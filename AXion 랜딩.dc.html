@@ -63,7 +63,7 @@
       <img src="assets/axion-logo.png" alt="AXION" style="height:26px;width:auto;display:block" />
     </a>
     <div class="axNavLinks" style="display:flex;align-items:center;gap:10px">
-      <a href="#" class="axNavText" style="text-decoration:none;color:var(--ink);font-weight:600;font-size:14.5px;padding:10px 16px;border-radius:10px;white-space:nowrap">서비스 소개서</a>
+      <a href="https://featpaper.com/n/Pheh72OR/6r" target="_blank" rel="noopener" class="axNavText" style="text-decoration:none;color:var(--ink);font-weight:600;font-size:14.5px;padding:10px 16px;border-radius:10px;white-space:nowrap">서비스 소개서</a>
       <button onClick="{{ openSignup }}" style="text-decoration:none;color:#fff;background:var(--deep);font-weight:700;font-size:14.5px;padding:10px 20px;border:none;border-radius:11px;cursor:pointer;font-family:inherit;box-shadow:0 8px 18px -8px rgba(26,86,50,.6);white-space:nowrap">사전등록</button>
     </div>
   </nav>
@@ -450,7 +450,7 @@ class Component extends DCLogic {
     const open = !!m;
     return {
       openSignup: () => this.openModal('signup'),
-      openBrochure: () => this.openModal('brochure'),
+      openBrochure: () => window.open('https://featpaper.com/n/Pheh72OR/6r', '_blank', 'noopener'),
       closeModal: () => this.closeModal(),
       stopProp: (e) => { if (e && e.stopPropagation) e.stopPropagation(); },
       submitSignup: (e) => this.submitSignup(e),
