@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  @keyframes g3spin{to{transform:rotate(360deg)}}
+  @keyframes g3rin{to{opacity:1;transform:none}}
+
+  .g3win{margin:0 auto;max-width:1000px;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff;box-shadow:0 1px 2px rgba(15,32,24,.04),0 44px 100px -54px rgba(15,32,24,.5)}
+  .g3bar{display:flex;align-items:center;gap:10px;padding:11px 16px;border-bottom:1px solid var(--line);background:#fbfdfc}
+  .g3crumb{font-size:12.5px;font-weight:700;color:var(--ink2)}
+  .g3crumb i{color:var(--muted);font-style:normal;margin:0 5px}
+  .g3crumb b{color:var(--ink);font-weight:800}
+  .g3badge{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;color:var(--green2);background:var(--mint);padding:5px 11px;border-radius:7px}
+  .g3badge .sp{display:inline-block;animation:g3spin 3s linear infinite}
+  .g3body{padding:28px 30px 32px;background:#F3F7F4}
+
+  .g3flowhead{font-size:12px;font-weight:700;color:var(--ink2);text-align:center;margin-bottom:20px;word-break:keep-all}
+  .g3flowhead b{color:var(--green2);font-weight:800}
+
+  .g3flow{display:flex;align-items:stretch;justify-content:center;gap:30px;position:relative}
+  @media(max-width:840px){.g3flow{flex-wrap:wrap;gap:14px}}
+
+  .g3match{flex:1;min-width:0;display:flex;flex-direction:column}
+  .g3mlabel{font-size:10.5px;font-weight:800;color:var(--muted);text-align:center;margin-bottom:10px;letter-spacing:.01em}
+
+  .g3chip{display:flex;align-items:center;gap:11px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:11px 13px;box-shadow:0 1px 2px rgba(15,32,24,.03),0 8px 20px -16px rgba(15,32,24,.28);transition:opacity .3s}
+  .g3cmain{flex:1;min-width:0}
+  .g3chip .lab{font-size:9px;font-weight:800;color:var(--muted);letter-spacing:.03em;text-transform:uppercase}
+  .g3chip .tag{font-size:13px;font-weight:800;color:var(--ink);letter-spacing:-.01em;margin-top:3px;white-space:nowrap}
+  .g3chip .tk{height:4px;border-radius:3px;background:var(--soft);overflow:hidden;margin-top:8px}
+  .g3chip .tk i{display:block;height:100%;border-radius:3px;background:#CBD5CF;width:0;transition:width 1.1s cubic-bezier(.35,0,.1,1)}
+  .g3chip .cv{flex:0 0 auto;font-size:18px;font-weight:800;letter-spacing:-.02em;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1}
+  .g3chip .cv small{font-size:9.5px;color:var(--muted);font-weight:700}
+  .g3chip.win{border-color:var(--lime);background:var(--mint2);box-shadow:0 1px 2px rgba(26,86,50,.05),0 14px 28px -16px rgba(26,86,50,.42)}
+  .g3chip.win .lab{color:var(--green2)}
+  .g3chip.win .cv{color:var(--green2)}
+  .g3chip.win .tk i{background:linear-gradient(90deg,var(--lime),var(--accent))}
+  .g3chip.lose{opacity:.5}
+  .g3vs{font-size:9px;font-weight:800;color:var(--muted);text-align:center;padding:6px 0}
+
+  .g3result{flex:0 0 auto;width:166px;border:none;border-radius:12px;background:linear-gradient(165deg,#1F6B41,var(--green));padding:18px 16px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:0 1px 2px rgba(26,86,50,.1),0 24px 46px -20px rgba(26,86,50,.55)}
+  .g3result .rt{font-size:10px;font-weight:800;color:#9FDCBA;letter-spacing:.03em}
+  .g3result .rbig{display:flex;align-items:baseline;gap:8px;justify-content:center;margin:8px 0 7px}
+  .g3result .rfrom{font-size:13px;font-weight:700;color:#83CFA5;font-variant-numeric:tabular-nums}
+  .g3result .rto{font-size:38px;font-weight:800;color:#fff;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+  .g3result .rs{font-size:10px;color:#CDEAD8;line-height:1.5;font-weight:600}
+
+  @media (prefers-reduced-motion: reduce){.g3match,.g3result{animation-duration:.01ms !important}}
+</style>
+</helmet>
+
+<div ref="{{ rootRef }}" style="--green:#1A5632;--accent:#37B179;--lime:#56C57E;--green2:#21724A;--mint:#E7F2EB;--mint2:#EEF8F1;--ink:#13261C;--ink2:#52645A;--muted:#90A096;--line:#E5ECE8;--soft:#F6F9F7;font-family:'Pretendard',system-ui,sans-serif;color:var(--ink);min-height:100vh;background:linear-gradient(180deg,#EAF3ED,#F6F9F7 55%,#fff);padding:42px 24px;display:flex;align-items:center;justify-content:center">
+
+  <div class="g3win">
+    <div class="g3body">
+      <div class="g3flow" ref="{{ flowRef }}"></div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1040,&quot;height&quot;:480},&quot;embedded&quot;:{&quot;editor&quot;:null,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  componentDidMount() { this.boot(); }
+  componentWillUnmount() {
+    if (this._resize) window.removeEventListener('resize', this._resize);
+    (this._t || []).forEach(t => clearTimeout(t));
+  }
+  componentDidUpdate() { this.applyEmbed(); }
+  applyEmbed() {
+    if (!this.root) return;
+    const emb = this.props && this.props.embedded;
+    this.root.style.background = emb ? 'transparent' : 'linear-gradient(180deg,#EAF3ED,#F6F9F7 55%,#fff)';
+    this.root.style.minHeight = emb ? '0' : '100vh';
+    this.root.style.padding = emb ? '0' : '42px 24px';
+  }
+  boot() {
+    if (!this.root || !this.flow) return;
+    this.applyEmbed();
+    this._t = [];
+    const MAX = 6;
+    const A = '할인 쿠폰';
+    const B = '재구매 리마인드';
+    const V1 = '재입고 알림';
+    const V2 = '등급 적립금';
+    const M = [
+      { top: { lab: 'A안', msg: A, v: 1.4 }, bot: { lab: 'B안', msg: B, v: 1.8 }, win: 'bot' },
+      { top: { lab: '직전 채택안', msg: B, v: 1.8 }, bot: { lab: '새 변형안', msg: V1, v: 3.0 }, win: 'bot' },
+      { top: { lab: '직전 채택안', msg: V1, v: 3.0 }, bot: { lab: '새 변형안', msg: V2, v: 4.5 }, win: 'bot' }
+    ];
+    const chip = (c, role, won) =>
+      '<div class="g3chip ' + role + ' ' + (won ? 'win' : 'lose') + '">' +
+        '<div class="g3cmain">' +
+          '<div class="lab">' + c.lab + (won ? ' · ✓ 채택' : '') + '</div>' +
+          '<div class="tag">' + c.msg + '</div>' +
+          '<div class="tk"><i data-w="' + (c.v / MAX * 100).toFixed(0) + '"></i></div>' +
+        '</div>' +
+        '<div class="cv">' + c.v + '<small>%</small></div></div>';
+    let html = '';
+    M.forEach((m, i) => {
+      html += '<div class="g3match">' +
+        '<div class="g3mlabel">' + (i + 1) + '회차</div>' +
+        chip(m.top, 'champ', m.win === 'top') +
+        '<div class="g3vs">VS</div>' +
+        chip(m.bot, 'chall', m.win === 'bot') + '</div>';
+    });
+    html += '<div class="g3result">' +
+      '<div class="rt">채택안 전환율</div>' +
+      '<div class="rbig"><span class="rfrom">1.8% →</span><span class="rto">4.5%</span></div>' +
+      '<div class="rs">최적안이 자산으로 남습니다</div></div>';
+    this.flow.innerHTML = html;
+    this._t.push(setTimeout(() => { this.flow.querySelectorAll('.g3chip .tk i').forEach(i => { i.style.width = i.dataset.w + '%'; }); }, 360));
+
+    const NS = 'http://www.w3.org/2000/svg';
+    const thread = document.createElementNS(NS, 'svg');
+    thread.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:4';
+    this.flow.appendChild(thread);
+    this.thread = thread;
+    this._resize = () => { (this._t || []).push(setTimeout(() => this.draw(), 80)); };
+    window.addEventListener('resize', this._resize);
+    this._t.push(setTimeout(() => this.draw(), 560));
+    this._t.push(setTimeout(() => this.draw(), 1200));
+  }
+  draw() {
+    const flow = this.flow, thread = this.thread;
+    if (!flow || !thread) return;
+    thread.innerHTML = '';
+    if (window.innerWidth <= 840) return;
+    const res = flow.querySelector('.g3result');
+    const NS = 'http://www.w3.org/2000/svg';
+    const f = flow.getBoundingClientRect();
+    const matches = [...flow.querySelectorAll('.g3match')];
+    const P = (el, side) => { const b = el.getBoundingClientRect(); return [(side === 'r' ? b.right : b.left) - f.left, (b.top + b.bottom) / 2 - f.top]; };
+    for (let i = 0; i < matches.length; i++) {
+      const winner = matches[i].querySelector('.g3chip.win');
+      const next = i < matches.length - 1 ? matches[i + 1].querySelector('.g3chip.champ') : res;
+      if (!winner || !next) continue;
+      const [x1, y1] = P(winner, 'r'), [x2, y2] = P(next, 'l'), dx = Math.max((x2 - x1) / 2, 18);
+      const p = document.createElementNS(NS, 'path');
+      p.setAttribute('d', 'M' + x1 + ',' + y1 + ' C' + (x1 + dx) + ',' + y1 + ' ' + (x2 - dx) + ',' + y2 + ' ' + x2 + ',' + y2);
+      p.setAttribute('fill', 'none');
+      p.setAttribute('stroke', 'var(--lime)');
+      p.setAttribute('stroke-width', '2.4');
+      p.setAttribute('stroke-linecap', 'round');
+      thread.appendChild(p);
+      const c = document.createElementNS(NS, 'circle');
+      c.setAttribute('cx', x1); c.setAttribute('cy', y1); c.setAttribute('r', '3.2'); c.setAttribute('fill', 'var(--lime)');
+      thread.appendChild(c);
+    }
+  }
+  renderVals() {
+    return {
+      rootRef: (el) => { this.root = el; },
+      flowRef: (el) => { this.flow = el; }
+    };
+  }
+}
+</script>
+</body>
+</html>
